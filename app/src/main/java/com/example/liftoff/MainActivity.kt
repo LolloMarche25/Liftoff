@@ -4,13 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.liftoff.model.Launch
 import com.example.liftoff.ui.screens.HomeScreen
 import com.example.liftoff.ui.theme.LiftoffTheme
@@ -32,7 +25,14 @@ class MainActivity : ComponentActivity() {
                     minutesLeft = 29,
                     secondsLeft = 58
                 )
-                HomeScreen(fakeLaunch)
+                val fakeUpcoming = listOf(
+                    Launch("Starlink Group 6-42", "Falcon 9", "SpaceX", "Kennedy Space Center, FL", "Scheduled"),
+                    Launch("Artemis III", "SLS Block 1B", "NASA", "Kennedy Space Center, FL", "Scheduled")
+                )
+                HomeScreen(
+                    fakeLaunch,
+                    fakeUpcoming
+                    )
             }
         }
     }
