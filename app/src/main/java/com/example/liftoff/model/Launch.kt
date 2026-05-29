@@ -1,6 +1,7 @@
 package com.example.liftoff.model
 
 data class Launch(
+    val id: Int,
     val name: String,
     val rocket: String,
     val agency: String,

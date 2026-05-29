@@ -12,7 +12,11 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.liftoff.navigation.NavigationRoute
 import com.example.liftoff.ui.theme.LiftoffBackground
 import com.example.liftoff.ui.theme.LiftoffPrimary
 import com.example.liftoff.ui.theme.LiftoffSurfaceVariant
@@ -24,30 +28,34 @@ data class BottomBarItem(
 )
 
 val bottomBarItems = listOf(
-    BottomBarItem("Home", Icons.Outlined.Home),
-    BottomBarItem("Launches", Icons.Outlined.RocketLaunch),
+    BottomBarItem("Home",      Icons.Outlined.Home),
+    BottomBarItem("Launches",  Icons.Outlined.RocketLaunch),
     BottomBarItem("Check-ins", Icons.Outlined.CameraAlt),
-    BottomBarItem("Badges", Icons.Outlined.MilitaryTech),
-    BottomBarItem("Profile", Icons.Outlined.Person)
+    BottomBarItem("Badges",    Icons.Outlined.MilitaryTech),
+    BottomBarItem("Profile",   Icons.Outlined.Person)
 )
 
 @Composable
-fun LiftoffBottomBar(
-    selectedIndex: Int,
-    onItemSelected: (Int) -> Unit
-) {
-    NavigationBar(
-        containerColor = LiftoffBackground
-    ) {
+fun LiftoffBottomBar(navController: NavHostController) {
+    val currentBackStack by navController.currentBackStackEntryAsState()
+
+    val selectedIndex = when (currentBackStack?.destination?.route) {
+        NavigationRoute.Home::class.qualifiedName -> 0
+        else -> 0
+    }
+
+    NavigationBar(containerColor = LiftoffBackground) {
         bottomBarItems.forEachIndexed { index, item ->
             NavigationBarItem(
                 selected = selectedIndex == index,
-                onClick = { onItemSelected(index) },
+                onClick = {
+                    when (index) {
+                        0 -> navController.navigate(NavigationRoute.Home)
+                        else -> { /*TODO*/ }
+                    }
+                },
                 icon = {
-                    Icon(
-                        imageVector = item.icon,
-                        contentDescription = item.label
-                    )
+                    Icon(imageVector = item.icon, contentDescription = item.label)
                 },
                 label = {
                     Text(text = item.label)
