@@ -1,6 +1,7 @@
 package com.example.liftoff.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.liftoff.model.Launch
+import com.example.liftoff.ui.composables.CountdownBox
 import com.example.liftoff.ui.theme.LiftoffBackground
 import com.example.liftoff.ui.theme.LiftoffSurface
 import com.example.liftoff.ui.theme.LiftoffSurfaceVariant
@@ -134,6 +136,18 @@ fun DetailHeroSection(launch: Launch) {
             ) {
                 Text(text = "\uD83D\uDE80", fontSize = 20.sp)
             }
+        }
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+        ) {
+            CountdownBox(launch.daysLeft, "DAYS", modifier = Modifier.weight(1f))
+            CountdownBox(launch.hoursLeft, "HRS",  modifier = Modifier.weight(1f))
+            CountdownBox(launch.minutesLeft, "MIN",  modifier = Modifier.weight(1f))
+            CountdownBox(launch.secondsLeft, "SEC",  modifier = Modifier.weight(1f))
         }
     }
 }

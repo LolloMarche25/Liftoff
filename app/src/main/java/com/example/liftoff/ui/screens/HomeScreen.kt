@@ -36,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.liftoff.model.Launch
+import com.example.liftoff.ui.composables.CountdownBox
 import com.example.liftoff.ui.composables.LiftoffBottomBar
 import com.example.liftoff.ui.composables.LiftoffTopBar
 import com.example.liftoff.ui.theme.LiftoffBackground
@@ -187,28 +188,6 @@ fun NextLaunchCard(launch: Launch) {
                 )
             }
         }
-    }
-}
-
-@Composable
-fun CountdownBox(value: Int, label: String, modifier: Modifier = Modifier) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-            .background(LiftoffSurfaceVariant, RoundedCornerShape(12.dp))
-            .padding(vertical = 12.dp)
-    ) {
-        Text(
-            text = value.toString().padStart(2, '0'),
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            color = LiftoffPrimary
-        )
-        Text(
-            text = label,
-            fontSize = 10.sp,
-            color = LiftoffTextSecondary
-        )
     }
 }
 
