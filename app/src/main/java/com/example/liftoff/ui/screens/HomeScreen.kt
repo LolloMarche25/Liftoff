@@ -1,6 +1,7 @@
 package com.example.liftoff.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -130,6 +131,18 @@ fun NextLaunchCard(launch: Launch) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                CountdownBox(launch.daysLeft, "DAYS", Modifier.weight(1f))
+                CountdownBox(launch.hoursLeft, "HRS",  Modifier.weight(1f))
+                CountdownBox(launch.minutesLeft, "MIN",  Modifier.weight(1f))
+                CountdownBox(launch.secondsLeft, "SEC",  Modifier.weight(1f))
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     imageVector = Icons.Outlined.LocationOn,
@@ -163,5 +176,27 @@ fun NextLaunchCard(launch: Launch) {
                 )
             }
         }
+    }
+}
+
+@Composable
+fun CountdownBox(value: Int, label: String, modifier: Modifier = Modifier) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+            .background(LiftoffSurfaceVariant, RoundedCornerShape(12.dp))
+            .padding(vertical = 12.dp)
+    ) {
+        Text(
+            text = value.toString().padStart(2, '0'),
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            color = LiftoffPrimary
+        )
+        Text(
+            text = label,
+            fontSize = 10.sp,
+            color = LiftoffTextSecondary
+        )
     }
 }
