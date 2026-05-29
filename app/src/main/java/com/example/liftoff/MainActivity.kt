@@ -26,7 +26,11 @@ class MainActivity : ComponentActivity() {
                     rocket = "Falcon 9",
                     agency = "SpaceX",
                     location = "Kennedy Space Center, FL",
-                    status = "Scheduled"
+                    status = "Scheduled",
+                    daysLeft = 2,
+                    hoursLeft = 14,
+                    minutesLeft = 29,
+                    secondsLeft = 58
                 )
                 HomeScreen(fakeLaunch)
             }
