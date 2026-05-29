@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.liftoff.model.Launch
 import com.example.liftoff.ui.screens.HomeScreen
 import com.example.liftoff.ui.theme.LiftoffTheme
 
@@ -20,7 +21,14 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             LiftoffTheme {
-                HomeScreen()
+                val fakeLaunch = Launch(
+                    name = "Starlink Group 6-42",
+                    rocket = "Falcon 9",
+                    agency = "SpaceX",
+                    location = "Kennedy Space Center, FL",
+                    status = "Scheduled"
+                )
+                HomeScreen(fakeLaunch)
             }
         }
     }
