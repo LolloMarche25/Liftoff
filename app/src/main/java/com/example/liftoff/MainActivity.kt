@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.example.liftoff.model.Launch
 import com.example.liftoff.ui.screens.HomeScreen
+import com.example.liftoff.ui.screens.LaunchDetailScreen
 import com.example.liftoff.ui.theme.LiftoffTheme
 
 class MainActivity : ComponentActivity() {
@@ -29,10 +30,8 @@ class MainActivity : ComponentActivity() {
                     Launch("Starlink Group 6-42", "Falcon 9", "SpaceX", "Kennedy Space Center, FL", "Scheduled"),
                     Launch("Artemis III", "SLS Block 1B", "NASA", "Kennedy Space Center, FL", "Scheduled")
                 )
-                HomeScreen(
-                    fakeLaunch,
-                    fakeUpcoming
-                    )
+                //HomeScreen(fakeLaunch, fakeUpcoming)
+                LaunchDetailScreen(fakeLaunch)
             }
         }
     }
