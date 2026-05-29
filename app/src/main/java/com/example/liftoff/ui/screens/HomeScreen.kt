@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.liftoff.model.Launch
 import com.example.liftoff.ui.composables.CountdownBox
 import com.example.liftoff.ui.composables.LiftoffBottomBar
@@ -48,8 +49,10 @@ import com.example.liftoff.ui.theme.LiftoffTextSecondary
 
 @Composable
 fun HomeScreen(
+    navController: NavHostController,
     nextLaunch: Launch,
-    upcomingLaunches: List<Launch>
+    upcomingLaunches: List<Launch>,
+    onLaunchClick: (Launch) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -60,10 +63,7 @@ fun HomeScreen(
             )
         },
         bottomBar = {
-            LiftoffBottomBar(
-                selectedIndex = 0,
-                onItemSelected = { /*TODO*/ }
-            )
+            LiftoffBottomBar(navController = navController)
         },
         containerColor = LiftoffBackground
     ) { innerPadding ->
@@ -75,18 +75,25 @@ fun HomeScreen(
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
             item {
-                NextLaunchCard(nextLaunch)
+                NextLaunchCard(
+                    launch = nextLaunch,
+                    onClick = { onLaunchClick(nextLaunch) }
+                )
             }
             item {
-                UpcomingLaunchesSection(upcomingLaunches)
+                UpcomingLaunchesSection(
+                    launches = upcomingLaunches,
+                    onLaunchClick = onLaunchClick
+                )
             }
         }
     }
 }
 
 @Composable
-fun NextLaunchCard(launch: Launch) {
+fun NextLaunchCard(launch: Launch, onClick: () -> Unit) {
     Card(
+        onClick = onClick,
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = LiftoffSurface),
         modifier = Modifier.fillMaxWidth()
@@ -192,7 +199,10 @@ fun NextLaunchCard(launch: Launch) {
 }
 
 @Composable
-fun UpcomingLaunchesSection(launches: List<Launch>) {
+fun UpcomingLaunchesSection(
+    launches: List<Launch>,
+    onLaunchClick: (Launch) -> Unit
+) {
     Column {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -218,15 +228,16 @@ fun UpcomingLaunchesSection(launches: List<Launch>) {
 
         LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             items(launches) { launch ->
-                UpcomingLaunchCard(launch)
+                UpcomingLaunchCard(launch, onClick = { onLaunchClick(launch) })
             }
         }
     }
 }
 
 @Composable
-fun UpcomingLaunchCard(launch: Launch) {
+fun UpcomingLaunchCard(launch: Launch, onClick: () -> Unit) {
     Card(
+        onClick = onClick,
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = LiftoffSurface),
         modifier = Modifier.width(160.dp)
@@ -236,6 +247,12 @@ fun UpcomingLaunchCard(launch: Launch) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(160.dp)
+                    .background(LiftoffSurfaceVariant)
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(60.dp)
                     .background(
                         Brush.verticalGradient(
                             colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.8f))

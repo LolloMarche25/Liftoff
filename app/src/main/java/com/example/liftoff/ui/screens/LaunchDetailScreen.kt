@@ -39,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.liftoff.model.Launch
 import com.example.liftoff.ui.composables.CountdownBox
 import com.example.liftoff.ui.theme.LiftoffBackground
@@ -49,7 +50,10 @@ import com.example.liftoff.ui.theme.LiftoffSurfaceVariant
 import com.example.liftoff.ui.theme.LiftoffTextSecondary
 
 @Composable
-fun LaunchDetailScreen(launch: Launch) {
+fun LaunchDetailScreen(
+    navController: NavHostController,
+    launch: Launch,
+    ) {
     Scaffold(
         containerColor = LiftoffBackground
     ) { innerPadding ->
@@ -59,7 +63,7 @@ fun LaunchDetailScreen(launch: Launch) {
                 .padding(innerPadding)
         ) {
             item {
-                DetailHeroSection(launch)
+                DetailHeroSection(launch, navController)
             }
             item {
                 Spacer(modifier = Modifier.height(8.dp))
@@ -124,7 +128,7 @@ fun LaunchDetailScreen(launch: Launch) {
 }
 
 @Composable
-fun DetailHeroSection(launch: Launch) {
+fun DetailHeroSection(launch: Launch, navController: NavHostController) {
     Column {
         Box {
             Box(
@@ -135,7 +139,7 @@ fun DetailHeroSection(launch: Launch) {
             )
 
             IconButton(
-                onClick = { /*TODO*/ },
+                onClick = { navController.navigateUp() },
                 modifier = Modifier
                     .padding(8.dp)
                     .align(Alignment.TopStart)
