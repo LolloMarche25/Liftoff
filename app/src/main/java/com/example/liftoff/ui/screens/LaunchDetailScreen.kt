@@ -5,16 +5,22 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -29,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import com.example.liftoff.model.Launch
 import com.example.liftoff.ui.composables.CountdownBox
 import com.example.liftoff.ui.theme.LiftoffBackground
+import com.example.liftoff.ui.theme.LiftoffPrimary
 import com.example.liftoff.ui.theme.LiftoffSurface
 import com.example.liftoff.ui.theme.LiftoffSurfaceVariant
 import com.example.liftoff.ui.theme.LiftoffTextSecondary
@@ -47,11 +54,11 @@ fun LaunchDetailScreen(launch: Launch) {
                 DetailHeroSection(launch)
             }
             item {
-                Text(
-                    text = "Coming soon...",
-                    color = LiftoffTextSecondary,
-                    modifier = Modifier.padding(16.dp)
-                )
+                Spacer(modifier = Modifier.height(8.dp))
+                LaunchSiteCard(launch.location)
+            }
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }
@@ -148,6 +155,60 @@ fun DetailHeroSection(launch: Launch) {
             CountdownBox(launch.hoursLeft, "HRS",  modifier = Modifier.weight(1f))
             CountdownBox(launch.minutesLeft, "MIN",  modifier = Modifier.weight(1f))
             CountdownBox(launch.secondsLeft, "SEC",  modifier = Modifier.weight(1f))
+        }
+    }
+}
+
+@Composable
+fun LaunchSiteCard(location: String) {
+    Card(
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = LiftoffSurface),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Outlined.LocationOn,
+                    contentDescription = "Sito di lancio",
+                    tint = LiftoffPrimary,
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "Launch Site",
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+            }
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                text = location,
+                fontSize = 13.sp,
+                color = LiftoffTextSecondary
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp)
+                    .background(LiftoffBackground, RoundedCornerShape(8.dp)),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.LocationOn,
+                    contentDescription = null,
+                    tint = LiftoffPrimary,
+                    modifier = Modifier.size(32.dp)
+                )
+            }
         }
     }
 }
