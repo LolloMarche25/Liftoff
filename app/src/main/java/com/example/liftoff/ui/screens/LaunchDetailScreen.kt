@@ -1,9 +1,11 @@
 package com.example.liftoff.ui.screens
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,12 +19,17 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.CalendarToday
 import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.MilitaryTech
 import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,6 +42,7 @@ import androidx.compose.ui.unit.sp
 import com.example.liftoff.model.Launch
 import com.example.liftoff.ui.composables.CountdownBox
 import com.example.liftoff.ui.theme.LiftoffBackground
+import com.example.liftoff.ui.theme.LiftoffGold
 import com.example.liftoff.ui.theme.LiftoffPrimary
 import com.example.liftoff.ui.theme.LiftoffSurface
 import com.example.liftoff.ui.theme.LiftoffSurfaceVariant
@@ -56,6 +64,57 @@ fun LaunchDetailScreen(launch: Launch) {
             item {
                 Spacer(modifier = Modifier.height(8.dp))
                 LaunchSiteCard(launch.location)
+            }
+            item {
+                Spacer(modifier = Modifier.height(8.dp))
+                LaunchDescriptionCard(launch.description)
+            }
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                ) {
+                    Button(
+                        onClick = { /*TODO*/ },
+                        shape = RoundedCornerShape(24.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = LiftoffPrimary
+                        ),
+                        contentPadding = PaddingValues(vertical = 14.dp),
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.CalendarToday,
+                            contentDescription = null,
+                            tint = Color.White,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = "Check-in",
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                    }
+                    OutlinedButton(
+                        onClick = { /*TODO*/ },
+                        shape = RoundedCornerShape(24.dp),
+                        border = BorderStroke(1.dp, LiftoffPrimary),
+                        contentPadding = PaddingValues(vertical = 14.dp),
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(
+                            text = "Notify Me",
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = LiftoffPrimary
+                        )
+                    }
+                }
             }
             item {
                 Spacer(modifier = Modifier.height(16.dp))
@@ -209,6 +268,44 @@ fun LaunchSiteCard(location: String) {
                     modifier = Modifier.size(32.dp)
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun LaunchDescriptionCard(description: String) {
+    Card(
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = LiftoffSurface),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Outlined.MilitaryTech,
+                    contentDescription = "Descrizione",
+                    tint = LiftoffGold,
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "Why This Launch Matters",
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = description,
+                fontSize = 13.sp,
+                color = LiftoffTextSecondary,
+                lineHeight = 20.sp
+            )
         }
     }
 }
