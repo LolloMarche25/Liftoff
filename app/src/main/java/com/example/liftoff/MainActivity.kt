@@ -24,7 +24,8 @@ class MainActivity : ComponentActivity() {
                     daysLeft = 2,
                     hoursLeft = 14,
                     minutesLeft = 29,
-                    secondsLeft = 58
+                    secondsLeft = 58,
+                    description = "This mission will deploy 60 Starlink satellites to expand global internet coverage. The Falcon 9 booster will attempt to land on a drone ship for reuse."
                 )
                 val fakeUpcoming = listOf(
                     Launch("Starlink Group 6-42", "Falcon 9", "SpaceX", "Kennedy Space Center, FL", "Scheduled"),
