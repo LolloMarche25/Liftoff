@@ -6,5 +6,7 @@ sealed interface NavigationRoute {
     @Serializable
     data object Home : NavigationRoute
     @Serializable
+    data object Launches : NavigationRoute
+    @Serializable
     data class LaunchDetail(val launchId: Int) : NavigationRoute
 }

@@ -24,6 +24,7 @@ class MainActivity : ComponentActivity() {
                         agency = "SpaceX",
                         location = "Kennedy Space Center, FL",
                         status = "Scheduled",
+                        date = "May 30",
                         daysLeft = 2,
                         hoursLeft = 14,
                         minutesLeft = 29,
@@ -36,7 +37,8 @@ class MainActivity : ComponentActivity() {
                         rocket = "SLS Block 1B",
                         agency = "NASA",
                         location = "Kennedy Space Center, FL",
-                        status = "Scheduled"
+                        status = "Scheduled",
+                        date = "Jun 15"
                     )
                 )
                 NavGraph(navController = navController, launches = launches)
