@@ -41,6 +41,7 @@ fun LiftoffBottomBar(navController: NavHostController) {
 
     val selectedIndex = when (currentBackStack?.destination?.route) {
         NavigationRoute.Home::class.qualifiedName -> 0
+        NavigationRoute.Launches::class.qualifiedName -> 1
         else -> 0
     }
 
@@ -51,6 +52,7 @@ fun LiftoffBottomBar(navController: NavHostController) {
                 onClick = {
                     when (index) {
                         0 -> navController.navigate(NavigationRoute.Home)
+                        1 -> navController.navigate(NavigationRoute.Launches)
                         else -> { /*TODO*/ }
                     }
                 },

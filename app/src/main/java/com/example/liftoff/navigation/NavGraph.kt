@@ -8,6 +8,7 @@ import androidx.navigation.toRoute
 import com.example.liftoff.model.Launch
 import com.example.liftoff.ui.screens.HomeScreen
 import com.example.liftoff.ui.screens.LaunchDetailScreen
+import com.example.liftoff.ui.screens.LaunchesScreen
 
 @Composable
 fun NavGraph(
@@ -26,6 +27,12 @@ fun NavGraph(
                 onLaunchClick = { launch ->
                     navController.navigate(NavigationRoute.LaunchDetail(launch.id))
                 }
+            )
+        }
+        composable<NavigationRoute.Launches> {
+            LaunchesScreen(
+                navController = navController,
+                launches = launches
             )
         }
         composable<NavigationRoute.LaunchDetail> { backStackEntry ->
