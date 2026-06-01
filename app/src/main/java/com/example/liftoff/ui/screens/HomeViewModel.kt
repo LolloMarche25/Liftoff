@@ -55,4 +55,8 @@ class HomeViewModel(private val repository: LaunchRepository) : ViewModel() {
             secondsLeft = (totalSeconds % 60).toInt()
         )
     }
+
+    fun setNextLaunchNotified() {
+        _state.value = _state.value?.copy(isNextLaunchNotified = true)
+    }
 }

@@ -1,6 +1,5 @@
 package com.example.liftoff.ui.screens
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,7 +29,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -84,49 +82,30 @@ fun LaunchDetailScreen(
             }
             item {
                 Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                Button(
+                    onClick = onCheckInClick,
+                    shape = RoundedCornerShape(24.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (detailState.isCheckedIn) LiftoffSurfaceVariant else LiftoffPrimary
+                    ),
+                    contentPadding = PaddingValues(vertical = 14.dp),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
                 ) {
-                    Button(
-                        onClick = onCheckInClick,
-                        shape = RoundedCornerShape(24.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = if (detailState.isCheckedIn) LiftoffSurfaceVariant else LiftoffPrimary
-                        ),
-                        contentPadding = PaddingValues(vertical = 14.dp),
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.CalendarToday,
-                            contentDescription = null,
-                            tint = Color.White,
-                            modifier = Modifier.size(18.dp)
-                        )
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text(
-                            text = if (detailState.isCheckedIn) "Checked-in!" else "Check-in",
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White
-                        )
-                    }
-                    OutlinedButton(
-                        onClick = { /*TODO*/ },
-                        shape = RoundedCornerShape(24.dp),
-                        border = BorderStroke(1.dp, LiftoffPrimary),
-                        contentPadding = PaddingValues(vertical = 14.dp),
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Text(
-                            text = "Notify Me",
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = LiftoffPrimary
-                        )
-                    }
+                    Icon(
+                        imageVector = Icons.Outlined.CalendarToday,
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text(
+                        text = if (detailState.isCheckedIn) "Checked-in!" else "Check-in",
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
                 }
             }
             item {

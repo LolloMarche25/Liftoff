@@ -2,6 +2,7 @@ package com.example.liftoff
 
 import android.app.Application
 import com.example.liftoff.di.appModule
+import com.example.liftoff.ui.utils.NotificationHelper
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -14,5 +15,6 @@ class LiftoffApplication : Application() {
             androidContext(this@LiftoffApplication)
             modules(appModule)
         }
+        NotificationHelper.createChannel(this)
     }
 }
