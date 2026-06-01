@@ -27,6 +27,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
@@ -72,7 +73,10 @@ fun LaunchDetailScreen(
             }
             item {
                 Spacer(modifier = Modifier.height(8.dp))
-                LaunchSiteCard(launch.location)
+                LaunchSiteCard(
+                    launch.location,
+                    detailState = detailState
+                )
             }
             item {
                 Spacer(modifier = Modifier.height(8.dp))
@@ -246,7 +250,9 @@ fun DetailHeroSection(launch: Launch, navController: NavHostController) {
 }
 
 @Composable
-fun LaunchSiteCard(location: String) {
+fun LaunchSiteCard(location: String, detailState: LaunchDetailState) {
+    val context = LocalContext.current
+
     Card(
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = LiftoffSurface),
@@ -279,21 +285,59 @@ fun LaunchSiteCard(location: String) {
                 color = LiftoffTextSecondary
             )
 
+            if (detailState.latitude.isNotEmpty()) {
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = "Lat: ${detailState.latitude} | Lon: ${detailState.longitude}",
+                    fontSize = 11.sp,
+                    color = LiftoffTextSecondary
+                )
+            }
+
             Spacer(modifier = Modifier.height(12.dp))
 
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp)
-                    .background(LiftoffBackground, RoundedCornerShape(8.dp)),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.LocationOn,
-                    contentDescription = null,
-                    tint = LiftoffPrimary,
-                    modifier = Modifier.size(32.dp)
-                )
+            if (detailState.latitude.isNotEmpty()) {
+                Button(
+                    onClick = {
+                        val uri = android.net.Uri.parse(
+                            "geo:${detailState.latitude},${detailState.longitude}?q=${detailState.latitude},${detailState.longitude}"                        )
+                        val intent = android.content.Intent(
+                            android.content.Intent.ACTION_VIEW, uri
+                        )
+                        context.startActivity(intent)
+                    },
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = LiftoffSurfaceVariant
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.LocationOn,
+                        contentDescription = null,
+                        tint = LiftoffPrimary,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "Apri in Maps",
+                        color = Color.White,
+                        fontSize = 14.sp
+                    )
+                }
+            } else {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(80.dp)
+                        .background(LiftoffBackground, RoundedCornerShape(8.dp)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(
+                        color = LiftoffPrimary,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
             }
         }
     }

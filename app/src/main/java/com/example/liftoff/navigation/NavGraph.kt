@@ -25,6 +25,7 @@ import com.example.liftoff.ui.screens.LaunchDetailViewModel
 import com.example.liftoff.ui.screens.LaunchesScreen
 import com.example.liftoff.ui.screens.ProfileScreen
 import com.example.liftoff.ui.theme.LiftoffPrimary
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -101,14 +102,16 @@ fun NavGraph(navController: NavHostController) {
             val detailViewModel = koinViewModel<LaunchDetailViewModel>()
             val detailState by detailViewModel.state.collectAsStateWithLifecycle()
 
-            LaunchedEffect(route.launchId) {
-                detailViewModel.loadCheckInStatus(route.launchId)
-            }
-
             state?.let { homeState ->
                 val allLaunches = listOf(homeState.nextLaunch) + homeState.upcomingLaunches
                 val launch = allLaunches.find { it.id == route.launchId }
                 if (launch != null) {
+
+                    LaunchedEffect(route.launchId) {
+                        detailViewModel.loadCheckInStatus(route.launchId)
+                        detailViewModel.loadLaunchSiteLocation(launch.location)
+                    }
+
                     LaunchDetailScreen(
                         navController = navController,
                         launch = launch,

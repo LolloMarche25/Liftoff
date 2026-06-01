@@ -25,7 +25,7 @@ class HomeViewModel(private val repository: LaunchRepository) : ViewModel() {
                 )
                 startCountdownTimer()
             } catch (e: Exception) {
-                android.util.Log.e("HomeViewModel", "Errore caricamento: ${e.message}", e)
+
             }
         }
     }
@@ -44,9 +44,9 @@ class HomeViewModel(private val repository: LaunchRepository) : ViewModel() {
 
     private fun recalculateCountdown(launch: Launch): Launch {
         if (launch.netUtc.isEmpty()) return launch
-        val launchIstant = java.time.Instant.parse(launch.netUtc)
+        val launchInstant = java.time.Instant.parse(launch.netUtc)
         val now = java.time.Instant.now()
-        val duration = java.time.Duration.between(now, launchIstant)
+        val duration = java.time.Duration.between(now, launchInstant)
         val totalSeconds = duration.seconds.coerceAtLeast(0)
         return launch.copy(
             daysLeft = (totalSeconds / 86400).toInt(),
