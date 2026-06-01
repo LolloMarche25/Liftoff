@@ -8,6 +8,7 @@ data class Launch(
     val location: String,
     val status: String,
     val date: String = "",
+    val netUtc: String = "",
     val daysLeft: Int = 0,
     val hoursLeft: Int = 0,
     val minutesLeft: Int = 0,
