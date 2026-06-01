@@ -9,4 +9,10 @@ sealed interface NavigationRoute {
     data object Launches : NavigationRoute
     @Serializable
     data class LaunchDetail(val launchId: Int) : NavigationRoute
+    @Serializable
+    data object CheckIns : NavigationRoute
+    @Serializable
+    data object Badges : NavigationRoute
+    @Serializable
+    data object Profile : NavigationRoute
 }
