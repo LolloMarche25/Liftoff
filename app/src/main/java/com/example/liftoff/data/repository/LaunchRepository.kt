@@ -37,6 +37,7 @@ private fun LaunchDto.toDomain(id: Int): Launch {
         status = status.name,
         date = net.substring(0,  10),
         netUtc = net,
+        imageUrl = image ?: "",
         daysLeft = days.toInt(),
         hoursLeft = hours.toInt(),
         minutesLeft = minutes.toInt(),
