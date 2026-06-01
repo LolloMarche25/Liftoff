@@ -1,5 +1,7 @@
 package com.example.liftoff.ui.screens
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,11 +30,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,22 +53,24 @@ import com.example.liftoff.ui.theme.LiftoffBackground
 import com.example.liftoff.ui.theme.LiftoffGold
 import com.example.liftoff.ui.theme.LiftoffPrimary
 import com.example.liftoff.ui.theme.LiftoffSurface
-import com.example.liftoff.ui.theme.LiftoffSurfaceVariant
 import com.example.liftoff.ui.theme.LiftoffTextSecondary
+import com.example.liftoff.ui.utils.NotificationHelper
 
 @Composable
 fun HomeScreen(
     navController: NavHostController,
     nextLaunch: Launch,
     upcomingLaunches: List<Launch>,
-    onLaunchClick: (Launch) -> Unit
+    isNextLaunchNotified: Boolean,
+    onLaunchClick: (Launch) -> Unit,
+    onNotifyClick: () -> Unit
 ) {
     Scaffold(
         topBar = {
             LiftoffTopBar(
                 title = "Next Launch",
                 subtitle = "Get ready for liftoff",
-                showNotificationIcon = true
+                showOptionsIcon = true
             )
         },
         bottomBar = {
@@ -79,7 +88,9 @@ fun HomeScreen(
             item {
                 NextLaunchCard(
                     launch = nextLaunch,
-                    onClick = { onLaunchClick(nextLaunch) }
+                    isNotified = isNextLaunchNotified,
+                    onClick = { onLaunchClick(nextLaunch) },
+                    onNotifyClick = onNotifyClick
                 )
             }
             item {
@@ -93,7 +104,23 @@ fun HomeScreen(
 }
 
 @Composable
-fun NextLaunchCard(launch: Launch, onClick: () -> Unit) {
+fun NextLaunchCard(
+    launch: Launch,
+    isNotified: Boolean,
+    onClick: () -> Unit,
+    onNotifyClick: () -> Unit
+) {
+    val context = LocalContext.current
+
+    val notificationPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            NotificationHelper.scheduleNotification(context, launch.name, launch.netUtc)
+            NotificationHelper.showNotification(context, launch.name)
+            onNotifyClick()
+        }
+    }
     Card(
         onClick = onClick,
         shape = RoundedCornerShape(16.dp),
@@ -184,7 +211,17 @@ fun NextLaunchCard(launch: Launch, onClick: () -> Unit) {
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    if (!isNotified) {
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                            notificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+                        } else {
+                            NotificationHelper.scheduleNotification(context, launch.name, launch.netUtc)
+                            NotificationHelper.showNotification(context, launch.name)
+                            onNotifyClick()
+                        }
+                    }
+                },
                 shape = RoundedCornerShape(24.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = LiftoffPrimary
@@ -192,7 +229,7 @@ fun NextLaunchCard(launch: Launch, onClick: () -> Unit) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = "Notify Me",
+                    text = if (isNotified) "You'll be reminded" else "Remind Me",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White

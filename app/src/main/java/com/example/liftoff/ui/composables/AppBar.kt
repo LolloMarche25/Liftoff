@@ -1,12 +1,10 @@
 package com.example.liftoff.ui.composables
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -22,8 +20,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.liftoff.ui.theme.LiftoffBackground
-import com.example.liftoff.ui.theme.LiftoffPrimary
-import com.example.liftoff.ui.theme.LiftoffSurfaceVariant
 import com.example.liftoff.ui.theme.LiftoffTextSecondary
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -31,7 +27,7 @@ import com.example.liftoff.ui.theme.LiftoffTextSecondary
 fun LiftoffTopBar(
     title: String,
     subtitle: String? = null,
-    showNotificationIcon: Boolean = false,
+    showOptionsIcon: Boolean = false,
     showShareIcon: Boolean = false
 ) {
     TopAppBar(
@@ -53,21 +49,17 @@ fun LiftoffTopBar(
             }
         },
         actions = {
-            if (showNotificationIcon) {
+            if (showOptionsIcon) {
                 IconButton(onClick = { /*TODO*/ }) {
                     Box(
                         modifier = Modifier
-                            .size(40.dp)
-                            .background(
-                                color = LiftoffSurfaceVariant,
-                                shape = CircleShape
-                            ),
+                            .size(40.dp),
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
-                            imageVector = Icons.Outlined.Notifications,
-                            contentDescription = "Notifiche",
-                            tint = LiftoffPrimary
+                            imageVector = Icons.Outlined.MoreVert,
+                            contentDescription = "Impostazioni",
+                            tint = Color.White
                         )
                     }
                 }

@@ -50,9 +50,11 @@ fun NavGraph(navController: NavHostController) {
                     navController = navController,
                     nextLaunch = state!!.nextLaunch,
                     upcomingLaunches = state!!.upcomingLaunches,
+                    isNextLaunchNotified = state!!.isNextLaunchNotified,
                     onLaunchClick = { launch ->
                         navController.navigate(NavigationRoute.LaunchDetail(launch.id))
-                    }
+                    },
+                    onNotifyClick = { homeViewModel.setNextLaunchNotified() }
                 )
             }
         }
