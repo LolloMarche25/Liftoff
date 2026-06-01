@@ -16,32 +16,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             LiftoffTheme {
                 val navController = rememberNavController()
-                val launches = listOf(
-                    Launch(
-                        id = 1,
-                        name = "Starlink Group 6-42",
-                        rocket = "Falcon 9",
-                        agency = "SpaceX",
-                        location = "Kennedy Space Center, FL",
-                        status = "Scheduled",
-                        date = "May 30",
-                        daysLeft = 2,
-                        hoursLeft = 14,
-                        minutesLeft = 29,
-                        secondsLeft = 58,
-                        description = "This mission will deploy 60 Starlink satellites."
-                    ),
-                    Launch(
-                        id = 2,
-                        name = "Artemis III",
-                        rocket = "SLS Block 1B",
-                        agency = "NASA",
-                        location = "Kennedy Space Center, FL",
-                        status = "Scheduled",
-                        date = "Jun 15"
-                    )
-                )
-                NavGraph(navController = navController, launches = launches)
+                NavGraph(navController = navController)
             }
         }
     }
