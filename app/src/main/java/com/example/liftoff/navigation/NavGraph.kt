@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,6 +21,7 @@ import com.example.liftoff.ui.screens.CheckInsScreen
 import com.example.liftoff.ui.screens.HomeScreen
 import com.example.liftoff.ui.screens.HomeViewModel
 import com.example.liftoff.ui.screens.LaunchDetailScreen
+import com.example.liftoff.ui.screens.LaunchDetailViewModel
 import com.example.liftoff.ui.screens.LaunchesScreen
 import com.example.liftoff.ui.screens.ProfileScreen
 import com.example.liftoff.ui.theme.LiftoffPrimary
@@ -96,6 +98,12 @@ fun NavGraph(navController: NavHostController) {
             val homeViewModel = koinViewModel<HomeViewModel>()
             val state by homeViewModel.state.collectAsStateWithLifecycle()
             val route = backStackEntry.toRoute<NavigationRoute.LaunchDetail>()
+            val detailViewModel = koinViewModel<LaunchDetailViewModel>()
+            val detailState by detailViewModel.state.collectAsStateWithLifecycle()
+
+            LaunchedEffect(route.launchId) {
+                detailViewModel.loadCheckInStatus(route.launchId)
+            }
 
             state?.let { homeState ->
                 val allLaunches = listOf(homeState.nextLaunch) + homeState.upcomingLaunches
@@ -103,7 +111,15 @@ fun NavGraph(navController: NavHostController) {
                 if (launch != null) {
                     LaunchDetailScreen(
                         navController = navController,
-                        launch = launch
+                        launch = launch,
+                        detailState = detailState,
+                        onCheckInClick = {
+                            detailViewModel.toggleCheckIn(
+                                launchId = launch.id,
+                                launchName = launch.name,
+                                date = launch.date
+                            )
+                        }
                     )
                 }
             }
