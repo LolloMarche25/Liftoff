@@ -1,7 +1,12 @@
 package com.example.liftoff.navigation
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -17,6 +22,7 @@ import com.example.liftoff.ui.screens.HomeViewModel
 import com.example.liftoff.ui.screens.LaunchDetailScreen
 import com.example.liftoff.ui.screens.LaunchesScreen
 import com.example.liftoff.ui.screens.ProfileScreen
+import com.example.liftoff.ui.theme.LiftoffPrimary
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -29,15 +35,25 @@ fun NavGraph(navController: NavHostController) {
             val homeViewModel = koinViewModel<HomeViewModel>()
             val state by homeViewModel.state.collectAsStateWithLifecycle()
 
-            HomeScreen(
-                navController = navController,
-                nextLaunch = state.nextLaunch,
-                upcomingLaunches = state.upcomingLaunches,
-                onLaunchClick = { launch ->
-                    navController.navigate(NavigationRoute.LaunchDetail(launch.id))
+            if (state == null) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(color = LiftoffPrimary)
                 }
-            )
+            } else {
+                HomeScreen(
+                    navController = navController,
+                    nextLaunch = state!!.nextLaunch,
+                    upcomingLaunches = state!!.upcomingLaunches,
+                    onLaunchClick = { launch ->
+                        navController.navigate(NavigationRoute.LaunchDetail(launch.id))
+                    }
+                )
+            }
         }
+        /*
         composable<NavigationRoute.Launches> {
             LaunchesScreen(
                 navController = navController,
@@ -55,7 +71,7 @@ fun NavGraph(navController: NavHostController) {
                 navController = navController,
                 checkIns = fakeCheckIns
             )
-        }
+        } */
         composable<NavigationRoute.Badges> {
             val fakeBadges = listOf(
                 Badge(1, "First Launch", "Checked in to your first launch", "\uD83D\uDE80", true),
@@ -79,15 +95,17 @@ fun NavGraph(navController: NavHostController) {
         composable<NavigationRoute.LaunchDetail> { backStackEntry ->
             val homeViewModel = koinViewModel<HomeViewModel>()
             val state by homeViewModel.state.collectAsStateWithLifecycle()
-
             val route = backStackEntry.toRoute<NavigationRoute.LaunchDetail>()
-            val allLaunches = listOf(state.nextLaunch) + state.upcomingLaunches
-            val launch = allLaunches.find { it.id == route.launchId }
-            if (launch != null) {
-                LaunchDetailScreen(
-                    navController = navController,
-                    launch = launch
-                )
+
+            state?.let { homeState ->
+                val allLaunches = listOf(homeState.nextLaunch) + homeState.upcomingLaunches
+                val launch = allLaunches.find { it.id == route.launchId }
+                if (launch != null) {
+                    LaunchDetailScreen(
+                        navController = navController,
+                        launch = launch
+                    )
+                }
             }
         }
     }
