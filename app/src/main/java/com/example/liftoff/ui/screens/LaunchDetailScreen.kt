@@ -37,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -162,8 +163,24 @@ fun DetailHeroSection(launch: Launch, navController: NavHostController) {
                 }
             }
 
+            val context = LocalContext.current
+
             IconButton(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    val sendIntent = android.content.Intent().apply {
+                        action = android.content.Intent.ACTION_SEND
+                        type = "text/plain"
+                        putExtra(
+                            android.content.Intent.EXTRA_TEXT,
+                            "\uD83D\uDE80 ${launch.name} - ${launch.rocket} by ${launch.agency}\n" +
+                            "Launching on ${launch.date} from ${launch.location}\n" +
+                            "Follow it on Liftoff!"
+                        )
+                    }
+                    context.startActivity(
+                        android.content.Intent.createChooser(sendIntent, "Share launch")
+                    )
+                },
                 modifier = Modifier
                     .padding(8.dp)
                     .align(Alignment.TopEnd)
