@@ -25,7 +25,7 @@ class HomeViewModel(private val repository: LaunchRepository) : ViewModel() {
                 )
                 startCountdownTimer()
             } catch (e: Exception) {
-
+                android.util.Log.e("HomeViewModel", "Errore caricamento: ${e.message}", e)
             }
         }
     }
@@ -34,9 +34,9 @@ class HomeViewModel(private val repository: LaunchRepository) : ViewModel() {
         viewModelScope.launch {
             while (true) {
                 delay(1000)
-                val currenState = _state.value ?: return@launch
-                _state.value = currenState.copy(
-                    nextLaunch = recalculateCountdown(currenState.nextLaunch)
+                val currentState = _state.value ?: return@launch
+                _state.value = currentState.copy(
+                    nextLaunch = recalculateCountdown(currentState.nextLaunch)
                 )
             }
         }

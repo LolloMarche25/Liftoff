@@ -56,6 +56,8 @@ import com.example.liftoff.ui.theme.LiftoffTextSecondary
 fun LaunchDetailScreen(
     navController: NavHostController,
     launch: Launch,
+    detailState: LaunchDetailState,
+    onCheckInClick: () -> Unit
     ) {
     Scaffold(
         containerColor = LiftoffBackground
@@ -85,10 +87,10 @@ fun LaunchDetailScreen(
                         .padding(horizontal = 16.dp)
                 ) {
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = onCheckInClick,
                         shape = RoundedCornerShape(24.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = LiftoffPrimary
+                            containerColor = if (detailState.isCheckedIn) LiftoffSurfaceVariant else LiftoffPrimary
                         ),
                         contentPadding = PaddingValues(vertical = 14.dp),
                         modifier = Modifier.weight(1f)
@@ -101,7 +103,7 @@ fun LaunchDetailScreen(
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
-                            text = "Check-in",
+                            text = if (detailState.isCheckedIn) "Checked-in!" else "Check-in",
                             fontSize = 15.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White
