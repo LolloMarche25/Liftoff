@@ -19,7 +19,8 @@ data class LaunchDto(
     val pad: PadDto,
     @SerialName("launch_service_provider")
     val launchServiceProvider: AgencyDto,
-    val mission: MissionDto? = null
+    val mission: MissionDto? = null,
+    val image: String? = null
 )
 
 @Serializable

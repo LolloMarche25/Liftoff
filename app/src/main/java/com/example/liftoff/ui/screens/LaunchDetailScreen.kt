@@ -36,10 +36,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import com.example.liftoff.model.Launch
 import com.example.liftoff.ui.composables.CountdownBox
 import com.example.liftoff.ui.theme.LiftoffBackground
@@ -131,11 +133,13 @@ fun LaunchDetailScreen(
 fun DetailHeroSection(launch: Launch, navController: NavHostController) {
     Column {
         Box {
-            Box(
+            AsyncImage(
+                model = launch.imageUrl,
+                contentDescription = launch.name,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(280.dp)
-                    .background(LiftoffSurfaceVariant)
             )
 
             IconButton(

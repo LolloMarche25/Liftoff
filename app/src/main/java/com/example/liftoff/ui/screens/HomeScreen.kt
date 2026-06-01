@@ -32,10 +32,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import com.example.liftoff.model.Launch
 import com.example.liftoff.ui.composables.CountdownBox
 import com.example.liftoff.ui.composables.LiftoffBottomBar
@@ -100,11 +102,13 @@ fun NextLaunchCard(launch: Launch, onClick: () -> Unit) {
     ) {
         Column {
             Box {
-                Box(
+                AsyncImage(
+                    model = launch.imageUrl,
+                    contentDescription = launch.name,
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(200.dp)
-                        .background(LiftoffSurfaceVariant)
+                        .height(160.dp)
                 )
                 Text(
                     text = launch.status,
@@ -243,11 +247,13 @@ fun UpcomingLaunchCard(launch: Launch, onClick: () -> Unit) {
         modifier = Modifier.width(160.dp)
     ) {
         Box {
-            Box(
+            AsyncImage(
+                model = launch.imageUrl,
+                contentDescription = launch.name,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(160.dp)
-                    .background(LiftoffSurfaceVariant)
             )
             Box(
                 modifier = Modifier

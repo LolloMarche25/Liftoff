@@ -9,6 +9,7 @@ data class Launch(
     val status: String,
     val date: String = "",
     val netUtc: String = "",
+    val imageUrl: String = "",
     val daysLeft: Int = 0,
     val hoursLeft: Int = 0,
     val minutesLeft: Int = 0,
