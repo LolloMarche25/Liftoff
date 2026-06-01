@@ -1,6 +1,8 @@
 package com.example.liftoff.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -11,24 +13,26 @@ import com.example.liftoff.model.Launch
 import com.example.liftoff.ui.screens.BadgesScreen
 import com.example.liftoff.ui.screens.CheckInsScreen
 import com.example.liftoff.ui.screens.HomeScreen
+import com.example.liftoff.ui.screens.HomeViewModel
 import com.example.liftoff.ui.screens.LaunchDetailScreen
 import com.example.liftoff.ui.screens.LaunchesScreen
 import com.example.liftoff.ui.screens.ProfileScreen
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun NavGraph(
-    navController: NavHostController,
-    launches: List<Launch>
-) {
+fun NavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
         startDestination = NavigationRoute.Home
     ) {
         composable<NavigationRoute.Home> {
+            val homeViewModel = koinViewModel<HomeViewModel>()
+            val state by homeViewModel.state.collectAsStateWithLifecycle()
+
             HomeScreen(
                 navController = navController,
-                nextLaunch = launches.first(),
-                upcomingLaunches = launches.drop(1),
+                nextLaunch = state.nextLaunch,
+                upcomingLaunches = state.upcomingLaunches,
                 onLaunchClick = { launch ->
                     navController.navigate(NavigationRoute.LaunchDetail(launch.id))
                 }
@@ -73,8 +77,12 @@ fun NavGraph(
             ProfileScreen(navController = navController)
         }
         composable<NavigationRoute.LaunchDetail> { backStackEntry ->
+            val homeViewModel = koinViewModel<HomeViewModel>()
+            val state by homeViewModel.state.collectAsStateWithLifecycle()
+
             val route = backStackEntry.toRoute<NavigationRoute.LaunchDetail>()
-            val launch = launches.find { it.id == route.launchId }
+            val allLaunches = listOf(state.nextLaunch) + state.upcomingLaunches
+            val launch = allLaunches.find { it.id == route.launchId }
             if (launch != null) {
                 LaunchDetailScreen(
                     navController = navController,
