@@ -53,11 +53,11 @@ import com.example.liftoff.ui.theme.LiftoffTextSecondary
 @Composable
 fun ProfileScreen(
     navController: NavHostController,
-    username: String = "Space Explorer",
-    email: String = "spaceexplorer@liftoff.app",
-    launchesFollowed: Int = 12,
-    checkInsCount: Int = 6,
-    badgesUnlocked: Int = 4
+    username: String,
+    email: String,
+    launchesFollowed: Int,
+    checkInsCount: Int,
+    badgesUnlocked: Int
 ) {
     Scaffold(
         topBar = { LiftoffTopBar(title = "Profile") },
