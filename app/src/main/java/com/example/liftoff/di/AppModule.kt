@@ -6,8 +6,12 @@ import com.example.liftoff.data.remote.LiftoffDataSource
 import com.example.liftoff.data.remote.OSMDataSource
 import com.example.liftoff.data.repository.CheckInRepository
 import com.example.liftoff.data.repository.LaunchRepository
+import com.example.liftoff.ui.screens.BadgesViewModel
+import com.example.liftoff.ui.screens.CheckInsViewModel
 import com.example.liftoff.ui.screens.HomeViewModel
 import com.example.liftoff.ui.screens.LaunchDetailViewModel
+import com.example.liftoff.ui.screens.LaunchesViewModel
+import com.example.liftoff.ui.screens.ProfileViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -29,4 +33,9 @@ val appModule = module {
 
     viewModel { HomeViewModel(get()) }
     viewModel { LaunchDetailViewModel(get(), get()) }
+    viewModel { LaunchesViewModel(get()) }
+    viewModel { CheckInsViewModel(get()) }
+    viewModel { BadgesViewModel(get()) }
+    viewModel { ProfileViewModel(get()) }
+
 }

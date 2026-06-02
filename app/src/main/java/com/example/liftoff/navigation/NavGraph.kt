@@ -13,19 +13,19 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.example.liftoff.model.Badge
-import com.example.liftoff.model.CheckIn
-import com.example.liftoff.model.Launch
 import com.example.liftoff.ui.screens.BadgesScreen
+import com.example.liftoff.ui.screens.BadgesViewModel
 import com.example.liftoff.ui.screens.CheckInsScreen
+import com.example.liftoff.ui.screens.CheckInsViewModel
 import com.example.liftoff.ui.screens.HomeScreen
 import com.example.liftoff.ui.screens.HomeViewModel
 import com.example.liftoff.ui.screens.LaunchDetailScreen
 import com.example.liftoff.ui.screens.LaunchDetailViewModel
 import com.example.liftoff.ui.screens.LaunchesScreen
+import com.example.liftoff.ui.screens.LaunchesViewModel
 import com.example.liftoff.ui.screens.ProfileScreen
+import com.example.liftoff.ui.screens.ProfileViewModel
 import com.example.liftoff.ui.theme.LiftoffPrimary
-import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -58,44 +58,55 @@ fun NavGraph(navController: NavHostController) {
                 )
             }
         }
-        /*
         composable<NavigationRoute.Launches> {
-            LaunchesScreen(
-                navController = navController,
-                launches = launches
-            )
+            val launchesViewModule = koinViewModel<LaunchesViewModel>()
+            val state by launchesViewModule.state.collectAsStateWithLifecycle()
+            if (state.isLoading) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator(color = LiftoffPrimary)
+                }
+            } else {
+                LaunchesScreen(
+                    navController = navController,
+                    launches = state.filteredLaunches,
+                    selectedFilter = state.selectedFilter,
+                    searchQuery = state.searchQuery,
+                    onLaunchClick = { launch ->
+                        navController.navigate(NavigationRoute.LaunchDetail(launch.id))
+                    },
+                    onFilterSelected = { launchesViewModule.setFilter(it) },
+                    onSearchQueryChange = { launchesViewModule.setSearchQuery(it) }
+                )
+            }
         }
         composable<NavigationRoute.CheckIns> {
-            val fakeCheckIns = listOf(
-                CheckIn(1, "Starlink Group 6-42", "May 30, 2026", "Incredible night launch! 🚀"),
-                CheckIn(2, "Artemis III", "Jun 15, 2026", "Historic moment - returning to the Moon!"),
-                CheckIn(3, "Crew Dragon Demo-5", "Apr 10, 2026", "Beautiful day for a launch"),
-                CheckIn(4, "OneWeb Launch 20", "Mar 22, 2026", "Witnessed it from the beach!")
-            )
-            CheckInsScreen(
-                navController = navController,
-                checkIns = fakeCheckIns
-            )
-        } */
+            val checkInsViewModel = koinViewModel<CheckInsViewModel>()
+            val state by checkInsViewModel.state.collectAsStateWithLifecycle()
+            CheckInsScreen(navController = navController, checkIns = state.checkIns)
+        }
         composable<NavigationRoute.Badges> {
-            val fakeBadges = listOf(
-                Badge(1, "First Launch", "Checked in to your first launch", "\uD83D\uDE80", true),
-                Badge(2, "Space Enthusiast", "Tracked 5 launches", "⭐", true),
-                Badge(3, "Night Owl", "Checked in to a night launch", "\uD83C\uDF19", true),
-                Badge(4, "SpaceX Fan", "Tracked 10 SpaceX launches", "🔥", true),
-                Badge(5, "Early Bird", "Tracked 5 launches in a row", "\uD83D\uDC26", false),
-                Badge(6, "Globetrotter", "Tracked launches from 5 different sites", "\uD83C\uDF0D", false),
-                Badge(7, "???", "Keep exploring!", "\uD83D\uDD12", false),
-                Badge(8, "???", "Keep exploring!", "\uD83D\uDD12", false),
-                Badge(9, "???", "Keep exploring!", "\uD83D\uDD12", false)
-            )
+            val badgesViewModel = koinViewModel<BadgesViewModel>()
+            val state by badgesViewModel.state.collectAsStateWithLifecycle()
             BadgesScreen(
                 navController = navController,
-                badges = fakeBadges
+                badges = state.badges,
+                userLevel = state.userLevel,
+                userPoints = state.userPoints,
+                progressCurrent = state.progressCurrent,
+                progressTotal = state.progressTotal
             )
         }
         composable<NavigationRoute.Profile> {
-            ProfileScreen(navController = navController)
+            val profileViewModule = koinViewModel<ProfileViewModel>()
+            val state by profileViewModule.state.collectAsStateWithLifecycle()
+            ProfileScreen(
+                navController = navController,
+                username = state.username,
+                email = state.email,
+                launchesFollowed = state.launchesFollowed,
+                checkInsCount = state.checkInsCount,
+                badgesUnlocked = state.badgesUnlocked
+            )
         }
         composable<NavigationRoute.LaunchDetail> { backStackEntry ->
             val homeViewModel = koinViewModel<HomeViewModel>()
