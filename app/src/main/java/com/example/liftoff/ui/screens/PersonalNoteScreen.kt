@@ -141,7 +141,7 @@ fun PersonalNoteScreen(
                     )
                 }
                 Text(
-                    text = "Check-in",
+                    text = "Remember the launch",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
@@ -166,7 +166,7 @@ fun PersonalNoteScreen(
             if (photoUri != null) {
                 AsyncImage(
                     model = photoUri,
-                    contentDescription = "Foto check-in",
+                    contentDescription = "Foto personale",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -270,7 +270,9 @@ fun PersonalNoteScreen(
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            text = "Check-ins earn you points and unlock exclusive badges. Keep tracking launches to level up!",
+                            text = "By adding launches to your space diary, you'll " +
+                                    "earn you points and unlock exclusive badges. " +
+                                    "Keep tracking launches to level up!",
                             fontSize = 14.sp,
                             color = LiftoffTextSecondary,
                             lineHeight = 18.sp
@@ -283,7 +285,7 @@ fun PersonalNoteScreen(
                 onClick = {
                     android.widget.Toast.makeText(
                         context,
-                        "Check-in posted! +100 points",
+                        "Launch added! +100 points",
                         android.widget.Toast.LENGTH_SHORT
                     ).show()
                     onPostCheckIn()
@@ -295,7 +297,7 @@ fun PersonalNoteScreen(
                 enabled = !isPosted
             ) {
                 Text(
-                    text = if (isPosted) "Posted! ✓" else "Post Check-In 🚀",
+                    text = if (isPosted) "Added! ✓" else "Add Launch 🚀",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White

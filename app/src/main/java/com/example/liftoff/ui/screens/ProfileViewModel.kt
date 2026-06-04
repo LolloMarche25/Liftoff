@@ -19,9 +19,14 @@ class ProfileViewModel(
 
     init {
         viewModelScope.launch {
-            val username = settingsRepository.username.first()
-            val email = settingsRepository.email.first()
-            _state.value = _state.value.copy(username = username, email = email)
+            settingsRepository.username.collect { username ->
+                _state.value = _state.value.copy(username = username)
+            }
+        }
+        viewModelScope.launch {
+            settingsRepository.email.collect { email ->
+                _state.value = _state.value.copy(email = email)
+            }
         }
         viewModelScope.launch {
             checkInRepository.getAll().collect { checkIns ->

@@ -1,6 +1,7 @@
 package com.example.liftoff.ui.composables
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Book
 import androidx.compose.material.icons.outlined.CameraAlt
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.MilitaryTech
@@ -30,7 +31,7 @@ data class BottomBarItem(
 val bottomBarItems = listOf(
     BottomBarItem("Home",      Icons.Outlined.Home),
     BottomBarItem("Launches",  Icons.Outlined.RocketLaunch),
-    BottomBarItem("Check-ins", Icons.Outlined.CameraAlt),
+    BottomBarItem("Diary", Icons.Outlined.Book),
     BottomBarItem("Badges",    Icons.Outlined.MilitaryTech),
     BottomBarItem("Profile",   Icons.Outlined.Person)
 )

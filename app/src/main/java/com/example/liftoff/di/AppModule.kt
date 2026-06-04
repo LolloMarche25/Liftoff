@@ -42,7 +42,7 @@ val appModule = module {
     single { OSMDataSource() }
     single { SettingsRepository(get()) }
 
-    viewModel { HomeViewModel(get()) }
+    viewModel { HomeViewModel(get(), get()) }
     viewModel { LaunchesViewModel(get()) }
     viewModel { CheckInsViewModel(get()) }
     viewModel { BadgesViewModel(get()) }

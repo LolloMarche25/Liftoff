@@ -37,12 +37,12 @@ class BadgesViewModel(private val repository: CheckInRepository) : ViewModel() {
 
     private fun generateBadges(checkInCount: Int): List<Badge> {
         return listOf(
-            Badge(1, "First Launch", "Checked in to your first launch", "\uD83D\uDE80", checkInCount >= 1),
-            Badge(2, "Space Enthusiast", "Tracked 5 launches", "⭐", checkInCount >= 5),
-            Badge(3, "Night Owl", "Checked in to a night launch", "\uD83C\uDF19", checkInCount >= 3),
-            Badge(4, "SpaceX Fan", "Tracked 10 SpaceX launches", "🔥", checkInCount >= 10),
-            Badge(5, "Early Bird", "Tracked 5 launches in a row", "🐦", false),
-            Badge(6, "Globetrotter", "Tracked launches from 5 sites", "🌍", false),
+            Badge(1, "First Launch", "Follow your first launch", "\uD83D\uDE80", checkInCount >= 1),
+            Badge(2, "Space Enthusiast", "Track 5 launches", "⭐", checkInCount >= 5),
+            Badge(3, "Night Owl", "Follow a night launch", "\uD83C\uDF19", checkInCount >= 3),
+            Badge(4, "SpaceX Fan", "Track 10 SpaceX launches", "🔥", checkInCount >= 10),
+            Badge(5, "Early Bird", "Track 5 launches in a row", "🐦", false),
+            Badge(6, "Globetrotter", "Track launches from 5 sites", "🌍", false),
             Badge(7, "???", "Keep exploring!", "🔒", false),
             Badge(8, "???", "Keep exploring!", "🔒", false),
             Badge(9, "???", "Keep exploring!", "🔒", false)

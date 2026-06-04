@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Logout
+import androidx.compose.material.icons.outlined.Book
 import androidx.compose.material.icons.outlined.CalendarToday
 import androidx.compose.material.icons.outlined.ChevronRight
 import androidx.compose.material.icons.outlined.MilitaryTech
@@ -81,6 +82,8 @@ fun ProfileScreen(
                 badgesUnlocked = badgesUnlocked
             )
             ProfileMenu(
+                onSpaceDiaryClick = { navController.navigate(NavigationRoute.CheckIns)},
+                onAchievementsClick = { navController.navigate(NavigationRoute.Badges)},
                 onSettingsClick = { navController.navigate(NavigationRoute.Settings) }
             )
             AboutCard()
@@ -141,7 +144,7 @@ fun ProfileCard(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 ProfileStat(value = launchesFollowed.toString(), label = "Launches\nFollowed", color = LiftoffPrimary)
-                ProfileStat(value = checkInsCount.toString(), label = "Check-ins", color = LiftoffPrimary)
+                ProfileStat(value = checkInsCount.toString(), label = "Launches\nposted", color = LiftoffPrimary)
                 ProfileStat(value = badgesUnlocked.toString(), label = "Badges\nUnlocked", color = LiftoffGold)
             }
         }
@@ -167,17 +170,23 @@ fun ProfileStat(value: String, label: String, color: Color) {
 }
 
 @Composable
-fun ProfileMenu(onSettingsClick: () -> Unit) {
+fun ProfileMenu(
+    onSpaceDiaryClick: () -> Unit,
+    onAchievementsClick: () -> Unit,
+    onSettingsClick: () -> Unit
+) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         ProfileMenuItem(
-            icon = Icons.Outlined.CalendarToday,
-            label = "My Calendar",
-            iconTint = LiftoffPrimary
+            icon = Icons.Outlined.Book,
+            label = "Space Diary",
+            iconTint = LiftoffPrimary,
+            onClick = onSpaceDiaryClick
         )
         ProfileMenuItem(
             icon = Icons.Outlined.MilitaryTech,
             label = "Achievements",
-            iconTint = LiftoffGold
+            iconTint = LiftoffGold,
+            onClick = onAchievementsClick
         )
         ProfileMenuItem(
             icon = Icons.Outlined.Settings,
@@ -244,7 +253,7 @@ fun AboutCard() {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Track space launches from agencies around the world. Check-in to launches, earn badges, and join a community of space enthusiasts!",
+                text = "Track space launches from agencies around the world. Add launches to your diary, earn badges, and join a community of space enthusiasts!",
                 fontSize = 13.sp,
                 color = LiftoffTextSecondary,
                 lineHeight = 20.sp
