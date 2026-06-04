@@ -23,6 +23,8 @@ import com.example.liftoff.ui.screens.LaunchDetailScreen
 import com.example.liftoff.ui.screens.LaunchDetailViewModel
 import com.example.liftoff.ui.screens.LaunchesScreen
 import com.example.liftoff.ui.screens.LaunchesViewModel
+import com.example.liftoff.ui.screens.PersonalNoteScreen
+import com.example.liftoff.ui.screens.PersonalNoteViewModel
 import com.example.liftoff.ui.screens.ProfileScreen
 import com.example.liftoff.ui.screens.ProfileViewModel
 import com.example.liftoff.ui.theme.LiftoffPrimary
@@ -128,17 +130,38 @@ fun NavGraph(navController: NavHostController) {
                     LaunchDetailScreen(
                         navController = navController,
                         launch = launch,
-                        detailState = detailState,
-                        onCheckInClick = {
-                            detailViewModel.toggleCheckIn(
-                                launchId = launch.id,
-                                launchName = launch.name,
-                                date = launch.date
-                            )
-                        }
+                        detailState = detailState
                     )
                 }
             }
+        }
+        composable<NavigationRoute.PersonalNote> { backStackEntry ->
+            val route = backStackEntry.toRoute<NavigationRoute.PersonalNote>()
+            val viewModel = koinViewModel<PersonalNoteViewModel>()
+            val state by viewModel.state.collectAsStateWithLifecycle()
+
+            LaunchedEffect(state.isPosted) {
+                if (state.isPosted) {
+                    navController.navigate(NavigationRoute.CheckIns) {
+                        popUpTo(NavigationRoute.Home) { inclusive = false }
+                    }
+                }
+            }
+
+            PersonalNoteScreen(
+                navController = navController,
+                launchName = route.launchName,
+                note = state.note,
+                isPosted = state.isPosted,
+                onNoteChange = { viewModel.onNoteChange(it) },
+                onPostCheckIn = {
+                    viewModel.postCheckIn(
+                        launchId = route.launchId,
+                        launchName = route.launchName,
+                        date = route.launchDate
+                    )
+                }
+            )
         }
     }
 }
