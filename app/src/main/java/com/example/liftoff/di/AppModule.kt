@@ -10,10 +10,6 @@ import com.example.liftoff.data.remote.LiftoffDataSource
 import com.example.liftoff.data.remote.OSMDataSource
 import com.example.liftoff.data.repository.CheckInRepository
 import com.example.liftoff.data.repository.LaunchRepository
-<<<<<<< Updated upstream
-import com.example.liftoff.ui.screens.HomeViewModel
-import com.example.liftoff.ui.screens.LaunchDetailViewModel
-=======
 import com.example.liftoff.data.repository.SettingsRepository
 import com.example.liftoff.ui.screens.BadgesViewModel
 import com.example.liftoff.ui.screens.CheckInsViewModel
@@ -23,7 +19,7 @@ import com.example.liftoff.ui.screens.LaunchesViewModel
 import com.example.liftoff.ui.screens.PersonalNoteViewModel
 import com.example.liftoff.ui.screens.ProfileViewModel
 import com.example.liftoff.ui.screens.SettingsViewModel
->>>>>>> Stashed changes
+
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -34,7 +30,7 @@ val appModule = module {
             get(),
             LiftoffDatabase::class.java,
             "liftoff-database"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 
     single { get<LiftoffDatabase>().checkInDao()}
@@ -47,9 +43,6 @@ val appModule = module {
     single { SettingsRepository(get()) }
 
     viewModel { HomeViewModel(get()) }
-<<<<<<< Updated upstream
-    viewModel { LaunchDetailViewModel(get(), get()) }
-=======
     viewModel { LaunchesViewModel(get()) }
     viewModel { CheckInsViewModel(get()) }
     viewModel { BadgesViewModel(get()) }
@@ -57,5 +50,4 @@ val appModule = module {
     viewModel { LaunchDetailViewModel(get(), get()) }
     viewModel { PersonalNoteViewModel(get()) }
     viewModel { SettingsViewModel(get()) }
->>>>>>> Stashed changes
 }

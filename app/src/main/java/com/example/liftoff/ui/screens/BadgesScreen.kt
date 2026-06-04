@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,10 +12,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.Card
@@ -46,36 +46,34 @@ import com.example.liftoff.ui.theme.LiftoffTextSecondary
 fun BadgesScreen(
     navController: NavHostController,
     badges: List<Badge>,
-    userLevel: String = "Astronaut",
-    userPoints: Int = 400,
-    progressCurrent: Int = 4,
-    progressTotal: Int = 9
+    userLevel: String,
+    userPoints: Int,
+    progressCurrent: Int,
+    progressTotal: Int
 ) {
     Scaffold(
-        topBar = {
-            LiftoffTopBar(
-                title = "Your Achievements",
-                subtitle = "Keep exploring to unlock more!"
-            )
-        },
+        topBar = { LiftoffTopBar(title = "Badges") },
         bottomBar = { LiftoffBottomBar(navController = navController) },
         containerColor = LiftoffBackground
     ) { innerPadding ->
-        Column(
+        LazyColumn(
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(16.dp)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            LevelCard(
-                level = userLevel,
-                points = userPoints,
-                progressCurrent = progressCurrent,
-                progressTotal = progressTotal
-            )
-            BadgesGrid(badges = badges)
+            item {
+                LevelCard(
+                    level = userLevel,
+                    points = userPoints,
+                    progressCurrent = progressCurrent,
+                    progressTotal = progressTotal
+                )
+            }
+            item {
+                BadgesGrid(badges = badges)
+            }
         }
     }
 }
