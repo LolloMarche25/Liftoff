@@ -10,5 +10,6 @@ data class CheckInEntity(
     val launchId: Int,
     val launchName: String,
     val date: String,
-    val note: String = ""
+    val note: String = "",
+    val photoUri: String = ""
 )
