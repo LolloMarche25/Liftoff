@@ -37,4 +37,14 @@ class SettingsRepository(private val dataStore: DataStore<Preferences>) {
     suspend fun setNotificationsEnabled(enabled: Boolean) = dataStore.edit { preferences ->
         preferences[NOTIFICATIONS_KEY] = enabled
     }
+
+    private val NOTIFIED_LAUNCH_KEY = stringPreferencesKey("notified_launch")
+
+    val notifiedLaunchName = dataStore.data.map { preferences ->
+        preferences[NOTIFIED_LAUNCH_KEY] ?: ""
+    }
+
+    suspend fun setNotifiedLaunch(launchName: String) = dataStore.edit { preferences ->
+        preferences[NOTIFIED_LAUNCH_KEY] = launchName
+    }
 }

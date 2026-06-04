@@ -111,7 +111,7 @@ fun LaunchDetailScreen(
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
-                        text = if (detailState.isCheckedIn) "Checked-in! ✓" else "Check-in",
+                        text = if (detailState.isCheckedIn) "Added to Diary! ✓" else "Add to Diary",
                         fontSize = 15.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White
