@@ -24,6 +24,12 @@ import com.example.liftoff.ui.screens.LaunchDetailScreen
 import com.example.liftoff.ui.screens.LaunchDetailViewModel
 import com.example.liftoff.ui.screens.LaunchesScreen
 import com.example.liftoff.ui.screens.ProfileScreen
+<<<<<<< Updated upstream
+=======
+import com.example.liftoff.ui.screens.ProfileViewModel
+import com.example.liftoff.ui.screens.SettingsScreen
+import com.example.liftoff.ui.screens.SettingsViewModel
+>>>>>>> Stashed changes
 import com.example.liftoff.ui.theme.LiftoffPrimary
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -54,7 +60,8 @@ fun NavGraph(navController: NavHostController) {
                     onLaunchClick = { launch ->
                         navController.navigate(NavigationRoute.LaunchDetail(launch.id))
                     },
-                    onNotifyClick = { homeViewModel.setNextLaunchNotified() }
+                    onNotifyClick = { homeViewModel.setNextLaunchNotified() },
+                    onOptionsClick = { navController.navigate(NavigationRoute.Settings)}
                 )
             }
         }
@@ -95,7 +102,32 @@ fun NavGraph(navController: NavHostController) {
             )
         }
         composable<NavigationRoute.Profile> {
+<<<<<<< Updated upstream
             ProfileScreen(navController = navController)
+=======
+            val profileViewModel = koinViewModel<ProfileViewModel>()
+            val state by profileViewModel.state.collectAsStateWithLifecycle()
+            ProfileScreen(
+                navController = navController,
+                username = state.username,
+                email = state.email,
+                launchesFollowed = state.launchesFollowed,
+                checkInsCount = state.checkInsCount,
+                badgesUnlocked = state.badgesUnlocked
+            )
+>>>>>>> Stashed changes
+        }
+        composable<NavigationRoute.Settings> {
+            val settingsViewModel = koinViewModel<SettingsViewModel>()
+            SettingsScreen(
+                navController = navController,
+                username = settingsViewModel.username,
+                email = settingsViewModel.email,
+                notificationsEnabled = settingsViewModel.notificationsEnabled,
+                onUsernameChange = { settingsViewModel.onUsernameChange(it) },
+                onEmailChange = { settingsViewModel.onEmailChange(it) },
+                onNotificationsChange = { settingsViewModel.onNotificationsChange(it) }
+            )
         }
         composable<NavigationRoute.LaunchDetail> { backStackEntry ->
             val homeViewModel = koinViewModel<HomeViewModel>()

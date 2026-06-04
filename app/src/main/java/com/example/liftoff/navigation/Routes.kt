@@ -15,4 +15,17 @@ sealed interface NavigationRoute {
     data object Badges : NavigationRoute
     @Serializable
     data object Profile : NavigationRoute
+<<<<<<< Updated upstream
+=======
+    @Serializable
+    data object Settings : NavigationRoute
+    @Serializable
+    data class LaunchDetail(val launchId: Int) : NavigationRoute
+    @Serializable
+    data class PersonalNote(
+        val launchId: Int,
+        val launchName: String,
+        val launchDate: String
+    ) : NavigationRoute
+>>>>>>> Stashed changes
 }
