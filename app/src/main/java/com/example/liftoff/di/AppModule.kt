@@ -22,7 +22,7 @@ val appModule = module {
             get(),
             LiftoffDatabase::class.java,
             "liftoff-database"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 
     single { get<LiftoffDatabase>().checkInDao()}
@@ -33,10 +33,10 @@ val appModule = module {
     single { OSMDataSource() }
 
     viewModel { HomeViewModel(get()) }
-    viewModel { LaunchDetailViewModel(get(), get()) }
     viewModel { LaunchesViewModel(get()) }
     viewModel { CheckInsViewModel(get()) }
     viewModel { BadgesViewModel(get()) }
     viewModel { ProfileViewModel(get()) }
+    viewModel { LaunchDetailViewModel(get(), get()) }
     viewModel { PersonalNoteViewModel(get()) }
 }

@@ -152,15 +152,20 @@ fun NavGraph(navController: NavHostController) {
                 navController = navController,
                 launchName = route.launchName,
                 note = state.note,
+                photoUri = state.photoUri,
                 isPosted = state.isPosted,
+                newlyUnlockedBadges = state.newlyUnlockedBadges,
+                currentBadgeIndex = state.currentBadgeIndex,
                 onNoteChange = { viewModel.onNoteChange(it) },
+                onPhotoTaken = { viewModel.setPhotoUri(it) },
                 onPostCheckIn = {
                     viewModel.postCheckIn(
                         launchId = route.launchId,
                         launchName = route.launchName,
                         date = route.launchDate
                     )
-                }
+                },
+                onDismissBadgeDialog = { viewModel.dismissBadgeDialog() }
             )
         }
     }
