@@ -27,6 +27,8 @@ import com.example.liftoff.ui.screens.PersonalNoteScreen
 import com.example.liftoff.ui.screens.PersonalNoteViewModel
 import com.example.liftoff.ui.screens.ProfileScreen
 import com.example.liftoff.ui.screens.ProfileViewModel
+import com.example.liftoff.ui.screens.SettingsScreen
+import com.example.liftoff.ui.screens.SettingsViewModel
 import com.example.liftoff.ui.theme.LiftoffPrimary
 import org.koin.androidx.compose.koinViewModel
 
@@ -39,12 +41,8 @@ fun NavGraph(navController: NavHostController) {
         composable<NavigationRoute.Home> {
             val homeViewModel = koinViewModel<HomeViewModel>()
             val state by homeViewModel.state.collectAsStateWithLifecycle()
-
             if (state == null) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(color = LiftoffPrimary)
                 }
             } else {
@@ -56,13 +54,14 @@ fun NavGraph(navController: NavHostController) {
                     onLaunchClick = { launch ->
                         navController.navigate(NavigationRoute.LaunchDetail(launch.id))
                     },
-                    onNotifyClick = { homeViewModel.setNextLaunchNotified() }
+                    onNotifyClick = { homeViewModel.setNextLaunchNotified() },
+                    onOptionsClick = { navController.navigate(NavigationRoute.Settings) }
                 )
             }
         }
         composable<NavigationRoute.Launches> {
-            val launchesViewModule = koinViewModel<LaunchesViewModel>()
-            val state by launchesViewModule.state.collectAsStateWithLifecycle()
+            val launchesViewModel = koinViewModel<LaunchesViewModel>()
+            val state by launchesViewModel.state.collectAsStateWithLifecycle()
             if (state.isLoading) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(color = LiftoffPrimary)
@@ -76,8 +75,8 @@ fun NavGraph(navController: NavHostController) {
                     onLaunchClick = { launch ->
                         navController.navigate(NavigationRoute.LaunchDetail(launch.id))
                     },
-                    onFilterSelected = { launchesViewModule.setFilter(it) },
-                    onSearchQueryChange = { launchesViewModule.setSearchQuery(it) }
+                    onFilterSelected = { launchesViewModel.setFilter(it) },
+                    onSearchQueryChange = { launchesViewModel.setSearchQuery(it) }
                 )
             }
         }
@@ -99,8 +98,8 @@ fun NavGraph(navController: NavHostController) {
             )
         }
         composable<NavigationRoute.Profile> {
-            val profileViewModule = koinViewModel<ProfileViewModel>()
-            val state by profileViewModule.state.collectAsStateWithLifecycle()
+            val profileViewModel = koinViewModel<ProfileViewModel>()
+            val state by profileViewModel.state.collectAsStateWithLifecycle()
             ProfileScreen(
                 navController = navController,
                 username = state.username,
@@ -110,23 +109,32 @@ fun NavGraph(navController: NavHostController) {
                 badgesUnlocked = state.badgesUnlocked
             )
         }
+        composable<NavigationRoute.Settings> {
+            val settingsViewModel = koinViewModel<SettingsViewModel>()
+            SettingsScreen(
+                navController = navController,
+                username = settingsViewModel.username,
+                email = settingsViewModel.email,
+                notificationsEnabled = settingsViewModel.notificationsEnabled,
+                onUsernameChange = { settingsViewModel.onUsernameChange(it) },
+                onEmailChange = { settingsViewModel.onEmailChange(it) },
+                onNotificationsChange = { settingsViewModel.onNotificationsChange(it) }
+            )
+        }
         composable<NavigationRoute.LaunchDetail> { backStackEntry ->
             val homeViewModel = koinViewModel<HomeViewModel>()
             val state by homeViewModel.state.collectAsStateWithLifecycle()
             val route = backStackEntry.toRoute<NavigationRoute.LaunchDetail>()
             val detailViewModel = koinViewModel<LaunchDetailViewModel>()
             val detailState by detailViewModel.state.collectAsStateWithLifecycle()
-
             state?.let { homeState ->
                 val allLaunches = listOf(homeState.nextLaunch) + homeState.upcomingLaunches
                 val launch = allLaunches.find { it.id == route.launchId }
                 if (launch != null) {
-
                     LaunchedEffect(route.launchId) {
                         detailViewModel.loadCheckInStatus(route.launchId)
                         detailViewModel.loadLaunchSiteLocation(launch.location)
                     }
-
                     LaunchDetailScreen(
                         navController = navController,
                         launch = launch,
@@ -139,7 +147,6 @@ fun NavGraph(navController: NavHostController) {
             val route = backStackEntry.toRoute<NavigationRoute.PersonalNote>()
             val viewModel = koinViewModel<PersonalNoteViewModel>()
             val state by viewModel.state.collectAsStateWithLifecycle()
-
             LaunchedEffect(state.isPosted) {
                 if (state.isPosted) {
                     navController.navigate(NavigationRoute.CheckIns) {
@@ -147,7 +154,6 @@ fun NavGraph(navController: NavHostController) {
                     }
                 }
             }
-
             PersonalNoteScreen(
                 navController = navController,
                 launchName = route.launchName,

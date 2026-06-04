@@ -40,20 +40,4 @@ class LaunchDetailViewModel(
             }
         }
     }
-
-    fun toggleCheckIn(launchId: Int, launchName: String, date: String) {
-        viewModelScope.launch {
-            if (_state.value.isCheckedIn) {
-                checkInRepository.deleteByLaunchId(launchId)
-            } else {
-                checkInRepository.insert(
-                    CheckInEntity(
-                        launchId = launchId,
-                        launchName = launchName,
-                        date = date
-                    )
-                )
-            }
-        }
-    }
 }

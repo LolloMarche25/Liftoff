@@ -41,6 +41,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.liftoff.navigation.NavigationRoute
 import com.example.liftoff.ui.composables.LiftoffBottomBar
 import com.example.liftoff.ui.composables.LiftoffTopBar
 import com.example.liftoff.ui.theme.LiftoffBackground
@@ -79,7 +80,9 @@ fun ProfileScreen(
                 checkInsCount = checkInsCount,
                 badgesUnlocked = badgesUnlocked
             )
-            ProfileMenu()
+            ProfileMenu(
+                onSettingsClick = { navController.navigate(NavigationRoute.Settings) }
+            )
             AboutCard()
             LogoutButton()
         }
@@ -164,7 +167,7 @@ fun ProfileStat(value: String, label: String, color: Color) {
 }
 
 @Composable
-fun ProfileMenu() {
+fun ProfileMenu(onSettingsClick: () -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         ProfileMenuItem(
             icon = Icons.Outlined.CalendarToday,
@@ -179,7 +182,8 @@ fun ProfileMenu() {
         ProfileMenuItem(
             icon = Icons.Outlined.Settings,
             label = "Settings",
-            iconTint = LiftoffTextSecondary
+            iconTint = LiftoffTextSecondary,
+            onClick = onSettingsClick
         )
     }
 }
@@ -188,9 +192,11 @@ fun ProfileMenu() {
 fun ProfileMenuItem(
     icon: ImageVector,
     label: String,
-    iconTint: Color
+    iconTint: Color,
+    onClick: () -> Unit = {}
 ) {
     Card(
+        onClick = onClick,
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = LiftoffSurface),
         modifier = Modifier.fillMaxWidth()

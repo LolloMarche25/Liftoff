@@ -30,10 +30,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -46,6 +42,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.liftoff.model.Launch
+import com.example.liftoff.navigation.NavigationRoute
 import com.example.liftoff.ui.composables.CountdownBox
 import com.example.liftoff.ui.composables.LiftoffBottomBar
 import com.example.liftoff.ui.composables.LiftoffTopBar
@@ -63,14 +60,16 @@ fun HomeScreen(
     upcomingLaunches: List<Launch>,
     isNextLaunchNotified: Boolean,
     onLaunchClick: (Launch) -> Unit,
-    onNotifyClick: () -> Unit
+    onNotifyClick: () -> Unit,
+    onOptionsClick: () -> Unit
 ) {
     Scaffold(
         topBar = {
             LiftoffTopBar(
                 title = "Next Launch",
                 subtitle = "Get ready for liftoff",
-                showOptionsIcon = true
+                showOptionsIcon = true,
+                onOptionsClick = onOptionsClick
             )
         },
         bottomBar = {
@@ -96,7 +95,8 @@ fun HomeScreen(
             item {
                 UpcomingLaunchesSection(
                     launches = upcomingLaunches,
-                    onLaunchClick = onLaunchClick
+                    onLaunchClick = onLaunchClick,
+                    onViewAllClick = { navController.navigate(NavigationRoute.Launches) }
                 )
             }
         }
@@ -242,7 +242,8 @@ fun NextLaunchCard(
 @Composable
 fun UpcomingLaunchesSection(
     launches: List<Launch>,
-    onLaunchClick: (Launch) -> Unit
+    onLaunchClick: (Launch) -> Unit,
+    onViewAllClick: () -> Unit
 ) {
     Column {
         Row(
@@ -256,7 +257,7 @@ fun UpcomingLaunchesSection(
                 fontWeight = FontWeight.Bold,
                 color = Color.White
             )
-            TextButton(onClick = { /*TODO*/ }) {
+            TextButton(onClick = onViewAllClick) {
                 Text(
                     text = "View All >",
                     fontSize = 13.sp,

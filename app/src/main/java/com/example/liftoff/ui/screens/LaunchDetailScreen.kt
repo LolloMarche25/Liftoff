@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.liftoff.model.Launch
+import com.example.liftoff.navigation.NavigationRoute
 import com.example.liftoff.ui.composables.CountdownBox
 import com.example.liftoff.ui.theme.LiftoffBackground
 import com.example.liftoff.ui.theme.LiftoffGold
@@ -55,8 +56,7 @@ import com.example.liftoff.ui.theme.LiftoffTextSecondary
 fun LaunchDetailScreen(
     navController: NavHostController,
     launch: Launch,
-    detailState: LaunchDetailState,
-    onCheckInClick: () -> Unit
+    detailState: LaunchDetailState
     ) {
     Scaffold(
         containerColor = LiftoffBackground
@@ -83,7 +83,17 @@ fun LaunchDetailScreen(
             item {
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(
-                    onClick = onCheckInClick,
+                    onClick = {
+                        if (!detailState.isCheckedIn) {
+                            navController.navigate(
+                                NavigationRoute.PersonalNote(
+                                    launchId = launch.id,
+                                    launchName = launch.name,
+                                    launchDate = launch.date
+                                )
+                            )
+                        }
+                    },
                     shape = RoundedCornerShape(24.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = if (detailState.isCheckedIn) LiftoffSurfaceVariant else LiftoffPrimary
@@ -101,7 +111,7 @@ fun LaunchDetailScreen(
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
-                        text = if (detailState.isCheckedIn) "Checked-in!" else "Check-in",
+                        text = if (detailState.isCheckedIn) "Checked-in! ✓" else "Check-in",
                         fontSize = 15.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White
