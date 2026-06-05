@@ -67,7 +67,6 @@ fun HomeScreen(
         topBar = {
             LiftoffTopBar(
                 title = "Next Launch",
-                subtitle = "Get ready for liftoff",
                 showOptionsIcon = true,
                 onOptionsClick = onOptionsClick
             )

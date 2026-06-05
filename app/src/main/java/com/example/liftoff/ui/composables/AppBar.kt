@@ -2,6 +2,7 @@ package com.example.liftoff.ui.composables
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -15,16 +16,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.liftoff.ui.theme.LiftoffBackground
-import com.example.liftoff.ui.theme.LiftoffTextSecondary
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LiftoffTopBar(
     title: String,
-    subtitle: String? = null,
+    showBackButton: Boolean = false,
     showOptionsIcon: Boolean = false,
     showShareIcon: Boolean = false,
-    onOptionsClick: () -> Unit = {}
+    onBackClick: () -> Unit = {},
+    onOptionsClick: () -> Unit = {},
+    onShareClick: () -> Unit = {}
 ) {
     TopAppBar(
         title = {
@@ -35,30 +37,34 @@ fun LiftoffTopBar(
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
-                if (subtitle != null) {
-                    Text(
-                        text = subtitle,
-                        fontSize = 14.sp,
-                        color = LiftoffTextSecondary
+            }
+        },
+        navigationIcon = {
+            if (showBackButton) {
+                IconButton(onClick = onBackClick) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
+                        contentDescription = "Indietro",
+                        tint = Color.White
                     )
                 }
             }
         },
         actions = {
+            if (showShareIcon) {
+                IconButton(onClick = onShareClick) {
+                    Icon(
+                        imageVector = Icons.Outlined.Share,
+                        contentDescription = "Condividi",
+                        tint = Color.White
+                    )
+                }
+            }
             if (showOptionsIcon) {
                 IconButton(onClick = onOptionsClick) {
                     Icon(
                         imageVector = Icons.Outlined.MoreVert,
                         contentDescription = "Impostazioni",
-                        tint = Color.White
-                    )
-                }
-            }
-            if (showShareIcon) {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        imageVector = Icons.Outlined.Share,
-                        contentDescription = "Condividi",
                         tint = Color.White
                     )
                 }
