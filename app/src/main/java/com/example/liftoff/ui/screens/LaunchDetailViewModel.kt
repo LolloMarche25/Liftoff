@@ -2,7 +2,6 @@ package com.example.liftoff.ui.screens
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.liftoff.data.database.CheckInEntity
 import com.example.liftoff.data.remote.OSMDataSource
 import com.example.liftoff.data.repository.CheckInRepository
 import kotlinx.coroutines.flow.MutableStateFlow
