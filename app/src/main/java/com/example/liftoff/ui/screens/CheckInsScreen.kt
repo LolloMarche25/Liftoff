@@ -51,8 +51,7 @@ fun CheckInsScreen(
     Scaffold(
         topBar = {
             LiftoffTopBar(
-                title = "Space Diary",
-                subtitle = "${checkIns.size} launches tracked"
+                title = "Space Diary"
             )
         },
         bottomBar = { LiftoffBottomBar(navController = navController) },

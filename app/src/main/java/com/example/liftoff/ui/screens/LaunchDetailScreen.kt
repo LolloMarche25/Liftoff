@@ -17,18 +17,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.CalendarToday
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.MilitaryTech
-import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -45,6 +42,7 @@ import coil.compose.AsyncImage
 import com.example.liftoff.model.Launch
 import com.example.liftoff.navigation.NavigationRoute
 import com.example.liftoff.ui.composables.CountdownBox
+import com.example.liftoff.ui.composables.LiftoffTopBar
 import com.example.liftoff.ui.theme.LiftoffBackground
 import com.example.liftoff.ui.theme.LiftoffGold
 import com.example.liftoff.ui.theme.LiftoffPrimary
@@ -58,7 +56,31 @@ fun LaunchDetailScreen(
     launch: Launch,
     detailState: LaunchDetailState
     ) {
+
+    val context = LocalContext.current
+
     Scaffold(
+        topBar = {
+            LiftoffTopBar(
+                title = launch.name,
+                showBackButton = true,
+                showShareIcon = true,
+                onBackClick = { navController.navigateUp() },
+                onShareClick = {
+                    val sendIntent = android.content.Intent().apply {
+                        action = android.content.Intent.ACTION_SEND
+                        type = "text/plain"
+                        putExtra(
+                            android.content.Intent.EXTRA_TEXT,
+                            "🚀 ${launch.name} - ${launch.rocket} by ${launch.agency}\n" +
+                                    "Launching on ${launch.date} from ${launch.location}\n" +
+                                    "Follow it on Liftoff!"
+                        )
+                    }
+                    context.startActivity(android.content.Intent.createChooser(sendIntent, "Share launch"))
+                }
+            )
+        },
         containerColor = LiftoffBackground
     ) { innerPadding ->
         LazyColumn(
@@ -67,7 +89,7 @@ fun LaunchDetailScreen(
                 .padding(innerPadding)
         ) {
             item {
-                DetailHeroSection(launch, navController)
+                DetailHeroSection(launch)
             }
             item {
                 Spacer(modifier = Modifier.height(8.dp))
@@ -126,75 +148,16 @@ fun LaunchDetailScreen(
 }
 
 @Composable
-fun DetailHeroSection(launch: Launch, navController: NavHostController) {
+fun DetailHeroSection(launch: Launch) {
     Column {
-        Box {
-            AsyncImage(
-                model = launch.imageUrl,
-                contentDescription = launch.name,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(280.dp)
-            )
-
-            IconButton(
-                onClick = { navController.navigateUp() },
-                modifier = Modifier
-                    .padding(8.dp)
-                    .align(Alignment.TopStart)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(40.dp)
-                        .background(LiftoffSurface.copy(alpha = 0.8f), CircleShape),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
-                        contentDescription = "Indietro",
-                        tint = Color.White
-                    )
-                }
-            }
-
-            val context = LocalContext.current
-
-            IconButton(
-                onClick = {
-                    val sendIntent = android.content.Intent().apply {
-                        action = android.content.Intent.ACTION_SEND
-                        type = "text/plain"
-                        putExtra(
-                            android.content.Intent.EXTRA_TEXT,
-                            "\uD83D\uDE80 ${launch.name} - ${launch.rocket} by ${launch.agency}\n" +
-                            "Launching on ${launch.date} from ${launch.location}\n" +
-                            "Follow it on Liftoff!"
-                        )
-                    }
-                    context.startActivity(
-                        android.content.Intent.createChooser(sendIntent, "Share launch")
-                    )
-                },
-                modifier = Modifier
-                    .padding(8.dp)
-                    .align(Alignment.TopEnd)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(40.dp)
-                        .background(LiftoffSurface.copy(alpha = 0.8f), CircleShape),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Share,
-                        contentDescription = "Condividi",
-                        tint = Color.White
-                    )
-                }
-            }
-        }
-
+        AsyncImage(
+            model = launch.imageUrl,
+            contentDescription = launch.name,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(280.dp)
+        )
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
@@ -220,10 +183,9 @@ fun DetailHeroSection(launch: Launch, navController: NavHostController) {
                     .background(Color.White, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
-                Text(text = "\uD83D\uDE80", fontSize = 20.sp)
+                Text(text = "🚀", fontSize = 20.sp)
             }
         }
-
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier
@@ -231,9 +193,9 @@ fun DetailHeroSection(launch: Launch, navController: NavHostController) {
                 .padding(horizontal = 16.dp)
         ) {
             CountdownBox(launch.daysLeft, "DAYS", modifier = Modifier.weight(1f))
-            CountdownBox(launch.hoursLeft, "HRS",  modifier = Modifier.weight(1f))
-            CountdownBox(launch.minutesLeft, "MIN",  modifier = Modifier.weight(1f))
-            CountdownBox(launch.secondsLeft, "SEC",  modifier = Modifier.weight(1f))
+            CountdownBox(launch.hoursLeft, "HRS", modifier = Modifier.weight(1f))
+            CountdownBox(launch.minutesLeft, "MIN", modifier = Modifier.weight(1f))
+            CountdownBox(launch.secondsLeft, "SEC", modifier = Modifier.weight(1f))
         }
     }
 }
