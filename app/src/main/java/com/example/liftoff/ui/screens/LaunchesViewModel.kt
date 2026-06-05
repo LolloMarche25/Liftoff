@@ -2,14 +2,12 @@ package com.example.liftoff.ui.screens
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.Query
 import com.example.liftoff.data.repository.LaunchRepository
 import com.example.liftoff.model.Launch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.util.logging.Filter
 
 class LaunchesViewModel(private val repository: LaunchRepository) : ViewModel() {
     private val _state = MutableStateFlow(LaunchesState())

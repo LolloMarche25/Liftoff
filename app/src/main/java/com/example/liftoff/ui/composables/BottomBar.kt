@@ -2,7 +2,6 @@ package com.example.liftoff.ui.composables
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Book
-import androidx.compose.material.icons.outlined.CameraAlt
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.MilitaryTech
 import androidx.compose.material.icons.outlined.Person
@@ -60,7 +59,6 @@ fun LiftoffBottomBar(navController: NavHostController) {
                         2 -> navController.navigate(NavigationRoute.CheckIns)
                         3 -> navController.navigate(NavigationRoute.Badges)
                         4 -> navController.navigate(NavigationRoute.Profile)
-                        else -> { /*TODO*/ }
                     }
                 },
                 icon = {

@@ -1,6 +1,5 @@
 package com.example.liftoff.data.remote.dto
 
-import android.location.Location
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
