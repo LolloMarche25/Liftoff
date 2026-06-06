@@ -16,6 +16,7 @@ import androidx.navigation.toRoute
 import com.example.liftoff.ui.screens.AuthViewModel
 import com.example.liftoff.ui.screens.BadgesScreen
 import com.example.liftoff.ui.screens.BadgesViewModel
+import com.example.liftoff.ui.screens.CheckInDetailScreen
 import com.example.liftoff.ui.screens.CheckInsScreen
 import com.example.liftoff.ui.screens.CheckInsViewModel
 import com.example.liftoff.ui.screens.HomeScreen
@@ -133,7 +134,26 @@ fun NavGraph(navController: NavHostController) {
         composable<NavigationRoute.Diary> {
             val checkInsViewModel = koinViewModel<CheckInsViewModel>()
             val state by checkInsViewModel.state.collectAsStateWithLifecycle()
-            CheckInsScreen(navController = navController, checkIns = state.checkIns)
+            CheckInsScreen(
+                navController = navController,
+                checkIns = state.checkIns,
+                onCheckInCLick = { checkIn ->
+                    navController.navigate(NavigationRoute.CheckInDetail(checkIn.id))
+                }
+            )
+        }
+        composable<NavigationRoute.CheckInDetail> { backStackEntry ->
+            val route = backStackEntry.toRoute<NavigationRoute.CheckInDetail>()
+            val checkInsViewModel = koinViewModel<CheckInsViewModel>()
+            val state by checkInsViewModel.state.collectAsStateWithLifecycle()
+
+            val checkIn = state.checkIns.find { it.id == route.checkInId }
+            if (checkIn != null) {
+                CheckInDetailScreen(
+                    navController = navController,
+                    checkIn = checkIn
+                )
+            }
         }
         composable<NavigationRoute.Badges> {
             val badgesViewModel = koinViewModel<BadgesViewModel>()
