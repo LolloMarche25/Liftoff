@@ -8,6 +8,8 @@ sealed interface NavigationRoute {
     @Serializable
     data object CheckIns : NavigationRoute
     @Serializable
+    data class CheckInDetail(val checkInId: Int) : NavigationRoute
+    @Serializable
     data object Badges : NavigationRoute
     @Serializable
     data object Profile : NavigationRoute
