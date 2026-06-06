@@ -13,6 +13,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.example.liftoff.ui.screens.AuthViewModel
 import com.example.liftoff.ui.screens.BadgesScreen
 import com.example.liftoff.ui.screens.BadgesViewModel
 import com.example.liftoff.ui.screens.CheckInsScreen
@@ -23,10 +24,12 @@ import com.example.liftoff.ui.screens.LaunchDetailScreen
 import com.example.liftoff.ui.screens.LaunchDetailViewModel
 import com.example.liftoff.ui.screens.LaunchesScreen
 import com.example.liftoff.ui.screens.LaunchesViewModel
+import com.example.liftoff.ui.screens.LoginScreen
 import com.example.liftoff.ui.screens.PersonalNoteScreen
 import com.example.liftoff.ui.screens.PersonalNoteViewModel
 import com.example.liftoff.ui.screens.ProfileScreen
 import com.example.liftoff.ui.screens.ProfileViewModel
+import com.example.liftoff.ui.screens.RegisterScreen
 import com.example.liftoff.ui.screens.SettingsScreen
 import com.example.liftoff.ui.screens.SettingsViewModel
 import com.example.liftoff.ui.theme.LiftoffPrimary
@@ -36,8 +39,55 @@ import org.koin.androidx.compose.koinViewModel
 fun NavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = NavigationRoute.Home
+        startDestination = NavigationRoute.Login
     ) {
+        composable<NavigationRoute.Login> {
+            val authViewModel = koinViewModel<AuthViewModel>()
+
+            LaunchedEffect(authViewModel.isAuthenticated) {
+                if (authViewModel.isAuthenticated) {
+                    navController.navigate(NavigationRoute.Home) {
+                        popUpTo(NavigationRoute.Login) { inclusive = true }
+                    }
+                }
+            }
+
+            LoginScreen(
+                navController = navController,
+                email = authViewModel.email,
+                password = authViewModel.password,
+                isLoading = authViewModel.isLoading,
+                errorMessage = authViewModel.errorMessage,
+                onEmailChange = { authViewModel.onEmailChange(it) },
+                onPasswordChange = { authViewModel.onPasswordChange(it) },
+                onLoginClick = { authViewModel.login() },
+                onRegisterClick = { navController.navigate(NavigationRoute.Register) }
+            )
+        }
+        composable<NavigationRoute.Register> {
+            val authViewModel = koinViewModel<AuthViewModel>()
+
+            LaunchedEffect(authViewModel.isAuthenticated) {
+                if (authViewModel.isAuthenticated) {
+                    navController.navigate(NavigationRoute.Home) {
+                        popUpTo(NavigationRoute.Login) { inclusive = true }
+                    }
+                }
+            }
+            RegisterScreen(
+                navController = navController,
+                username = authViewModel.username,
+                email = authViewModel.email,
+                password = authViewModel.password,
+                isLoading = authViewModel.isLoading,
+                errorMessage = authViewModel.errorMessage,
+                onUsernameChange = { authViewModel.onUsernameChange(it) },
+                onEmailChange = { authViewModel.onEmailChange(it) },
+                onPasswordChange = { authViewModel.onPasswordChange(it) },
+                onRegisterClick = { authViewModel.register() },
+                onLoginClick = { navController.navigateUp() }
+            )
+        }
         composable<NavigationRoute.Home> {
             val homeViewModel = koinViewModel<HomeViewModel>()
             val state by homeViewModel.state.collectAsStateWithLifecycle()
@@ -80,7 +130,7 @@ fun NavGraph(navController: NavHostController) {
                 )
             }
         }
-        composable<NavigationRoute.CheckIns> {
+        composable<NavigationRoute.Diary> {
             val checkInsViewModel = koinViewModel<CheckInsViewModel>()
             val state by checkInsViewModel.state.collectAsStateWithLifecycle()
             CheckInsScreen(navController = navController, checkIns = state.checkIns)
@@ -99,14 +149,22 @@ fun NavGraph(navController: NavHostController) {
         }
         composable<NavigationRoute.Profile> {
             val profileViewModel = koinViewModel<ProfileViewModel>()
+            val authViewModel = koinViewModel<AuthViewModel>()
             val state by profileViewModel.state.collectAsStateWithLifecycle()
+
             ProfileScreen(
                 navController = navController,
                 username = state.username,
                 email = state.email,
                 launchesFollowed = state.launchesFollowed,
                 checkInsCount = state.checkInsCount,
-                badgesUnlocked = state.badgesUnlocked
+                badgesUnlocked = state.badgesUnlocked,
+                onLogoutClick = {
+                    authViewModel.logout()
+                    navController.navigate(NavigationRoute.Login) {
+                        popUpTo(NavigationRoute.Home) { inclusive = true }
+                    }
+                }
             )
         }
         composable<NavigationRoute.Settings> {
@@ -149,7 +207,7 @@ fun NavGraph(navController: NavHostController) {
             val state by viewModel.state.collectAsStateWithLifecycle()
             LaunchedEffect(state.isPosted) {
                 if (state.isPosted) {
-                    navController.navigate(NavigationRoute.CheckIns) {
+                    navController.navigate(NavigationRoute.Diary) {
                         popUpTo(NavigationRoute.Home) { inclusive = false }
                     }
                 }
