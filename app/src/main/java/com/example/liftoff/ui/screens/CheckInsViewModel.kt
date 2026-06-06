@@ -23,7 +23,8 @@ class CheckInsViewModel(private val repository: CheckInRepository) : ViewModel()
                             launchName = entity.launchName,
                             date = entity.date,
                             note = entity.note,
-                            photoUri = entity.photoUri
+                            photoUri = entity.photoUri,
+                            imageUrl = entity.imageUrl
                         )
                     }
                 )

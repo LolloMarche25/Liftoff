@@ -111,6 +111,16 @@ fun CheckInCard(
                         .height(130.dp)
                         .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp))
                 )
+            } else if (checkIn.imageUrl.isNotEmpty()) {
+                AsyncImage(
+                    model = checkIn.imageUrl,
+                    contentDescription = checkIn.launchName,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(130.dp)
+                        .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp))
+                )
             } else {
                 Box(
                     modifier = Modifier

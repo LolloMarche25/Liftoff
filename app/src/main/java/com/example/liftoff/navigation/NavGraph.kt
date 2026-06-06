@@ -188,7 +188,8 @@ fun NavGraph(navController: NavHostController) {
                     viewModel.postCheckIn(
                         launchId = route.launchId,
                         launchName = route.launchName,
-                        date = route.launchDate
+                        date = route.launchDate,
+                        imageUrl = route.launchImageUrl
                     )
                 },
                 onDismissBadgeDialog = { viewModel.dismissBadgeDialog() }

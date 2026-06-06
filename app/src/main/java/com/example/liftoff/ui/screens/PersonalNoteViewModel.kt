@@ -28,7 +28,7 @@ class PersonalNoteViewModel(
         _state.value = _state.value.copy(photoUri = uri)
     }
 
-    fun postCheckIn(launchId: Int, launchName: String, date: String) {
+    fun postCheckIn(launchId: Int, launchName: String, date: String, imageUrl: String) {
         viewModelScope.launch {
             val beforeCount = checkInRepository.getAll().first().size
 
@@ -38,7 +38,8 @@ class PersonalNoteViewModel(
                     launchName = launchName,
                     date = date,
                     note = _state.value.note,
-                    photoUri = _state.value.photoUri?.toString() ?: ""
+                    photoUri = _state.value.photoUri?.toString() ?: "",
+                    imageUrl = imageUrl
                 )
             )
 
