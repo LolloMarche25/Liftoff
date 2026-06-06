@@ -58,7 +58,8 @@ fun ProfileScreen(
     email: String,
     launchesFollowed: Int,
     checkInsCount: Int,
-    badgesUnlocked: Int
+    badgesUnlocked: Int,
+    onLogoutClick: () -> Unit
 ) {
     Scaffold(
         topBar = { LiftoffTopBar(title = "Profile") },
@@ -81,12 +82,12 @@ fun ProfileScreen(
                 badgesUnlocked = badgesUnlocked
             )
             ProfileMenu(
-                onSpaceDiaryClick = { navController.navigate(NavigationRoute.CheckIns)},
+                onSpaceDiaryClick = { navController.navigate(NavigationRoute.Diary)},
                 onAchievementsClick = { navController.navigate(NavigationRoute.Badges)},
                 onSettingsClick = { navController.navigate(NavigationRoute.Settings) }
             )
             AboutCard()
-            LogoutButton()
+            LogoutButton(onClick = onLogoutClick)
         }
     }
 }
@@ -270,9 +271,9 @@ fun AboutCard() {
 }
 
 @Composable
-fun LogoutButton() {
+fun LogoutButton(onClick: () -> Unit) {
     OutlinedButton(
-        onClick = { /*TODO*/ },
+        onClick = onClick,
         shape = RoundedCornerShape(12.dp),
         border = BorderStroke(1.dp, LiftoffError),
         colors = ButtonDefaults.outlinedButtonColors(

@@ -31,7 +31,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -40,7 +39,6 @@ import com.example.liftoff.ui.theme.LiftoffError
 import com.example.liftoff.ui.theme.LiftoffPrimary
 import com.example.liftoff.ui.theme.LiftoffSurfaceVariant
 import com.example.liftoff.ui.theme.LiftoffTextSecondary
-import com.example.liftoff.ui.theme.LiftoffTheme
 
 @Composable
 fun LoginScreen(
@@ -180,23 +178,5 @@ fun LoginScreen(
                 )
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun LoginScreenPreview() {
-    LiftoffTheme {
-        LoginScreen(
-            navController = androidx.navigation.compose.rememberNavController(),
-            email = "something@somethingelse.app",
-            password = "password1234",
-            isLoading = false,
-            errorMessage = null,
-            onEmailChange = {},
-            onPasswordChange = {},
-            onLoginClick = {},
-            onRegisterClick = {}
-        )
     }
 }

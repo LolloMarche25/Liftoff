@@ -8,9 +8,11 @@ import androidx.room.Room
 import com.example.liftoff.data.database.LiftoffDatabase
 import com.example.liftoff.data.remote.LiftoffDataSource
 import com.example.liftoff.data.remote.OSMDataSource
+import com.example.liftoff.data.repository.AuthRepository
 import com.example.liftoff.data.repository.CheckInRepository
 import com.example.liftoff.data.repository.LaunchRepository
 import com.example.liftoff.data.repository.SettingsRepository
+import com.example.liftoff.ui.screens.AuthViewModel
 import com.example.liftoff.ui.screens.BadgesViewModel
 import com.example.liftoff.ui.screens.CheckInsViewModel
 import com.example.liftoff.ui.screens.HomeViewModel
@@ -41,6 +43,7 @@ val appModule = module {
     single { CheckInRepository(get()) }
     single { OSMDataSource() }
     single { SettingsRepository(get()) }
+    single { AuthRepository() }
 
     viewModel { HomeViewModel(get(), get()) }
     viewModel { LaunchesViewModel(get()) }
@@ -50,4 +53,5 @@ val appModule = module {
     viewModel { LaunchDetailViewModel(get(), get()) }
     viewModel { PersonalNoteViewModel(get()) }
     viewModel { SettingsViewModel(get()) }
+    viewModel { AuthViewModel(get(), get()) }
 }

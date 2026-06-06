@@ -2,11 +2,15 @@ package com.example.liftoff.navigation
 import kotlinx.serialization.Serializable
 sealed interface NavigationRoute {
     @Serializable
+    data object Login : NavigationRoute
+    @Serializable
+    data object Register : NavigationRoute
+    @Serializable
     data object Home : NavigationRoute
     @Serializable
     data object Launches : NavigationRoute
     @Serializable
-    data object CheckIns : NavigationRoute
+    data object Diary : NavigationRoute
     @Serializable
     data object Badges : NavigationRoute
     @Serializable
