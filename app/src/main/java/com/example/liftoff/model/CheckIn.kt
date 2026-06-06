@@ -5,5 +5,6 @@ data class CheckIn(
     val launchName: String,
     val date: String,
     val note: String = "",
-    val photoUri: String = ""
+    val photoUri: String = "",
+    val imageUrl: String = ""
 )

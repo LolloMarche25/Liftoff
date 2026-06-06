@@ -111,7 +111,8 @@ fun LaunchDetailScreen(
                                 NavigationRoute.PersonalNote(
                                     launchId = launch.id,
                                     launchName = launch.name,
-                                    launchDate = launch.date
+                                    launchDate = launch.date,
+                                    launchImageUrl = launch.imageUrl
                                 )
                             )
                         }

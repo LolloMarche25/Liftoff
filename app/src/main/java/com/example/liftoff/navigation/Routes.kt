@@ -25,6 +25,7 @@ sealed interface NavigationRoute {
     data class PersonalNote(
         val launchId: Int,
         val launchName: String,
-        val launchDate: String
+        val launchDate: String,
+        val launchImageUrl: String = ""
     ) : NavigationRoute
 }

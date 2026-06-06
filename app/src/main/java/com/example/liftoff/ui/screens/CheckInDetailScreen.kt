@@ -71,6 +71,16 @@ fun CheckInDetailScreen(
                         .height(240.dp)
                         .clip(RoundedCornerShape(16.dp))
                 )
+            } else if (checkIn.imageUrl.isNotEmpty()) {
+                AsyncImage(
+                    model = checkIn.imageUrl,
+                    contentDescription = checkIn.launchName,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(240.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                )
             }
 
             Card(

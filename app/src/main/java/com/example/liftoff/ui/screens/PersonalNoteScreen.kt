@@ -253,7 +253,7 @@ fun PersonalNoteScreen(
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = "By adding launches to your space diary, you'll " +
-                                    "earn you points and unlock exclusive badges. " +
+                                    "earn points and unlock exclusive badges. " +
                                     "Keep tracking launches to level up!",
                             fontSize = 14.sp,
                             color = LiftoffTextSecondary,
