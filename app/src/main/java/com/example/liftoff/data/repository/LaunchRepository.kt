@@ -10,9 +10,9 @@ class LaunchRepository(private val dataSource: LiftoffDataSource) {
             .mapIndexed { index, dto -> dto.toDomain(index + 1) }
             .filter { launch ->
                 launch.daysLeft > 0 ||
-                launch.hoursLeft > 0 ||
-                launch.minutesLeft > 0 ||
-                launch.secondsLeft > 0
+                        launch.hoursLeft > 0 ||
+                        launch.minutesLeft > 0 ||
+                        launch.secondsLeft > 0
             }
     }
 }
@@ -38,10 +38,11 @@ private fun LaunchDto.toDomain(id: Int): Launch {
         date = net.substring(0,  10),
         netUtc = net,
         imageUrl = image ?: "",
+        description = mission?.description ?: "No description available",
+        videoUrl = vid_urls.firstOrNull()?.url ?: "",
         daysLeft = days.toInt(),
         hoursLeft = hours.toInt(),
         minutesLeft = minutes.toInt(),
         secondsLeft = seconds.toInt(),
-        description = mission?.description ?: ""
     )
 }

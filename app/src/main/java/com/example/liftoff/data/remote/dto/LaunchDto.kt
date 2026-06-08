@@ -19,7 +19,8 @@ data class LaunchDto(
     @SerialName("launch_service_provider")
     val launchServiceProvider: AgencyDto,
     val mission: MissionDto? = null,
-    val image: String? = null
+    val image: String? = null,
+    val vid_urls: List<VidUrlDto> = emptyList()
 )
 
 @Serializable
@@ -47,4 +48,9 @@ data class LocationDto(val name: String)
 data class MissionDto(
     val name: String,
     val description: String
+)
+
+@Serializable
+data class VidUrlDto(
+    val url: String = ""
 )

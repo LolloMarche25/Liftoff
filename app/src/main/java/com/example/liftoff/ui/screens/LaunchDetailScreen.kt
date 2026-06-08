@@ -49,13 +49,14 @@ import com.example.liftoff.ui.theme.LiftoffPrimary
 import com.example.liftoff.ui.theme.LiftoffSurface
 import com.example.liftoff.ui.theme.LiftoffSurfaceVariant
 import com.example.liftoff.ui.theme.LiftoffTextSecondary
+import androidx.core.net.toUri
 
 @Composable
 fun LaunchDetailScreen(
     navController: NavHostController,
     launch: Launch,
     detailState: LaunchDetailState
-    ) {
+) {
 
     val context = LocalContext.current
 
@@ -101,6 +102,35 @@ fun LaunchDetailScreen(
             item {
                 Spacer(modifier = Modifier.height(8.dp))
                 LaunchDescriptionCard(launch.description)
+            }
+            item {
+                Spacer(modifier = Modifier.height(8.dp))
+                if (launch.videoUrl.isNotEmpty()) {
+                    Button(
+                        onClick = {
+                            val intent = android.content.Intent(
+                                android.content.Intent.ACTION_VIEW,
+                                launch.videoUrl.toUri()
+                            )
+                            context.startActivity(intent)
+                        },
+                        shape = RoundedCornerShape(24.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFFFF0000)
+                        ),
+                        contentPadding = PaddingValues(vertical = 14.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                    ) {
+                        Text(
+                            text = "▶ Watch Live on YouTube",
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                    }
+                }
             }
             item {
                 Spacer(modifier = Modifier.height(16.dp))
