@@ -12,6 +12,8 @@ class SettingsRepository(private val dataStore: DataStore<Preferences>) {
         private val USERNAME_KEY = stringPreferencesKey("username")
         private val EMAIL_KEY = stringPreferencesKey("email")
         private val NOTIFICATIONS_KEY = booleanPreferencesKey("notifications")
+        private val NOTIFIED_LAUNCH_KEY = stringPreferencesKey("notified_launch")
+        private val AVATAR_KEY = stringPreferencesKey("avatar")
     }
 
     val username = dataStore.data.map { preferences ->
@@ -26,6 +28,14 @@ class SettingsRepository(private val dataStore: DataStore<Preferences>) {
         preferences[NOTIFICATIONS_KEY] ?: true
     }
 
+    val notifiedLaunchName = dataStore.data.map { preferences ->
+        preferences[NOTIFIED_LAUNCH_KEY] ?: ""
+    }
+
+    val avatarEmoji = dataStore.data.map { preferences ->
+        preferences[AVATAR_KEY] ?: "🚀"
+    }
+
     suspend fun setUsername(username: String) = dataStore.edit { preferences ->
         preferences[USERNAME_KEY] = username
     }
@@ -38,13 +48,11 @@ class SettingsRepository(private val dataStore: DataStore<Preferences>) {
         preferences[NOTIFICATIONS_KEY] = enabled
     }
 
-    private val NOTIFIED_LAUNCH_KEY = stringPreferencesKey("notified_launch")
-
-    val notifiedLaunchName = dataStore.data.map { preferences ->
-        preferences[NOTIFIED_LAUNCH_KEY] ?: ""
-    }
-
     suspend fun setNotifiedLaunch(launchName: String) = dataStore.edit { preferences ->
         preferences[NOTIFIED_LAUNCH_KEY] = launchName
+    }
+
+    suspend fun setAvatarEmoji(emoji: String) = dataStore.edit { preferences ->
+        preferences[AVATAR_KEY] = emoji
     }
 }

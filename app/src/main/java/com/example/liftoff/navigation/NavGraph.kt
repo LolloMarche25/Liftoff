@@ -176,6 +176,7 @@ fun NavGraph(navController: NavHostController) {
                 navController = navController,
                 username = state.username,
                 email = state.email,
+                avatarEmoji = state.avatarEmoji,
                 launchesFollowed = state.launchesFollowed,
                 checkInsCount = state.checkInsCount,
                 badgesUnlocked = state.badgesUnlocked,
@@ -184,7 +185,8 @@ fun NavGraph(navController: NavHostController) {
                     navController.navigate(NavigationRoute.Login) {
                         popUpTo(NavigationRoute.Home) { inclusive = true }
                     }
-                }
+                },
+                onAvatarClick = { emoji -> profileViewModel.setAvatarEmoji(emoji) }
             )
         }
         composable<NavigationRoute.Settings> {
