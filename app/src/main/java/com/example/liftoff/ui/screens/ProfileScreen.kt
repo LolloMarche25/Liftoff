@@ -26,6 +26,7 @@ import androidx.compose.material.icons.automirrored.outlined.Logout
 import androidx.compose.material.icons.outlined.Book
 import androidx.compose.material.icons.outlined.ChevronRight
 import androidx.compose.material.icons.outlined.MilitaryTech
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
@@ -50,6 +51,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.liftoff.model.avatarOptions
 import com.example.liftoff.navigation.NavigationRoute
 import com.example.liftoff.ui.composables.LiftoffBottomBar
 import com.example.liftoff.ui.composables.LiftoffTopBar
@@ -77,6 +79,7 @@ fun ProfileScreen(
 
     if (showAvatarDialog) {
         AvatarPickerDialog(
+            checkInsCount = checkInsCount,
             onDismiss = { showAvatarDialog = false },
             onAvatarSelected = { emoji ->
                 onAvatarClick(emoji)
@@ -142,7 +145,16 @@ fun ProfileCard(
                         .clickable { onAvatarClick() },
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = avatarEmoji, fontSize = 28.sp)
+                    if (avatarEmoji.isEmpty()) {
+                        Icon(
+                            imageVector = Icons.Outlined.Person,
+                            contentDescription = null,
+                            tint = Color.White,
+                            modifier = Modifier.size(32.dp)
+                        )
+                    } else {
+                        Text(text = avatarEmoji, fontSize = 28.sp)
+                    }
                 }
                 Spacer(modifier = Modifier.width(16.dp))
                 Column {
@@ -327,14 +339,10 @@ fun LogoutButton(onClick: () -> Unit) {
 
 @Composable
 fun AvatarPickerDialog(
+    checkInsCount: Int,
     onDismiss: () -> Unit,
     onAvatarSelected: (String) -> Unit
 ) {
-    val avatars = listOf(
-        "🚀", "👨‍🚀", "👩‍🚀", "🌙", "⭐", "🛸",
-        "🌍", "🔭", "🪐", "☄️", "🌟", "🛰️"
-    )
-
     AlertDialog(
         onDismissRequest = onDismiss,
         containerColor = LiftoffSurface,
@@ -346,20 +354,38 @@ fun AvatarPickerDialog(
             )
         },
         text = {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(4),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                items(avatars) { emoji ->
-                    Box(
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .size(48.dp)
-                            .background(LiftoffSurfaceVariant, CircleShape)
-                            .clickable { onAvatarSelected(emoji) },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(text = emoji, fontSize = 24.sp)
+            Column {
+                Text(
+                    text = "Complete more check-ins to unlock new avatars!",
+                    fontSize = 12.sp,
+                    color = LiftoffTextSecondary,
+                    modifier = Modifier.padding(bottom = 12.dp)
+                )
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(4),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    items(avatarOptions) { option ->
+                        val isUnlocked = checkInsCount >= option.requiredCheckIns
+                        Box(
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .size(52.dp)
+                                .background(
+                                    if (isUnlocked) LiftoffSurfaceVariant else LiftoffBackground,
+                                    CircleShape
+                                )
+                                .clickable(enabled = isUnlocked) {
+                                    onAvatarSelected(option.emoji)
+                                },
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = if (isUnlocked) option.emoji else "🔒",
+                                fontSize = 24.sp,
+                                color = if (isUnlocked) Color.White else Color.Gray
+                            )
+                        }
                     }
                 }
             }

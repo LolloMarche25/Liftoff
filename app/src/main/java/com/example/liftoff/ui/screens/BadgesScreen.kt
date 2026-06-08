@@ -30,6 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -179,11 +180,14 @@ fun BadgeCell(badge: Badge, modifier: Modifier = Modifier) {
         colors = CardDefaults.cardColors(
             containerColor = if (isUnlocked) LiftoffSurface else LiftoffBackground
         ),
-        modifier = modifier
+        modifier = modifier.height(160.dp)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(12.dp)
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(12.dp)
         ) {
             Box(
                 modifier = Modifier
@@ -210,7 +214,9 @@ fun BadgeCell(badge: Badge, modifier: Modifier = Modifier) {
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
                 color = if (isUnlocked) Color.White else LiftoffTextSecondary,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
 
             Spacer(modifier = Modifier.height(4.dp))
@@ -220,7 +226,8 @@ fun BadgeCell(badge: Badge, modifier: Modifier = Modifier) {
                 fontSize = 10.sp,
                 color = LiftoffTextSecondary,
                 textAlign = TextAlign.Center,
-                maxLines = 2
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
             )
         }
     }
