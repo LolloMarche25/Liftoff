@@ -67,13 +67,17 @@ class PersonalNoteViewModel(
     private fun checkNewBadges(before: Int, after: Int): List<Badge> {
         val badges = mutableListOf<Badge>()
         if (before < 1 && after >= 1)
-            badges.add(Badge(1, "First Launch", "Checked in to your first launch", "🚀", true))
+            badges.add(Badge(1, "First Launch", "Follow your first launch", "🚀", true))
         if (before < 3 && after >= 3)
-            badges.add(Badge(3, "Night Owl", "Checked in to a night launch", "🌙", true))
+            badges.add(Badge(3, "Night Owl", "Add 3 launches to your diary", "\uD83C\uDF16", true))
         if (before < 5 && after >= 5)
-            badges.add(Badge(2, "Space Enthusiast", "Tracked 5 launches", "⭐", true))
+            badges.add(Badge(2, "Space Enthusiast", "Add 5 launches to your diary", "\uD83D\uDEF8", true))
+        if (before < 7 && after >= 7)
+            badges.add(Badge(4, "Orbiter", "Add 7 launches to your diary", "\uD83D\uDEF0\uFE0F", true))
         if (before < 10 && after >= 10)
-            badges.add(Badge(4, "SpaceX Fan", "Tracked 10 SpaceX launches", "🔥", true))
+            badges.add(Badge(5, "Astronaut", "Add 10 launches to your diary", "\uD83E\uDDD1\u200D\uD83D\uDE80", true))
+        if (before < 15 && after >= 15)
+            badges.add(Badge(6, "Space Analyst", "Add 15 launches to your diary", "\uD83D\uDD2D", true))
         return badges
     }
 }

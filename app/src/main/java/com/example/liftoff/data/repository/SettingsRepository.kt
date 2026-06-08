@@ -33,7 +33,7 @@ class SettingsRepository(private val dataStore: DataStore<Preferences>) {
     }
 
     val avatarEmoji = dataStore.data.map { preferences ->
-        preferences[AVATAR_KEY] ?: "🚀"
+        preferences[AVATAR_KEY] ?: ""
     }
 
     suspend fun setUsername(username: String) = dataStore.edit { preferences ->
