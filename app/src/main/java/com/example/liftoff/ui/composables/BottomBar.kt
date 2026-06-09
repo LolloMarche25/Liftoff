@@ -54,11 +54,11 @@ fun LiftoffBottomBar(navController: NavHostController) {
                 selected = selectedIndex == index,
                 onClick = {
                     when (index) {
-                        0 -> navController.navigate(NavigationRoute.Home)
-                        1 -> navController.navigate(NavigationRoute.Launches)
-                        2 -> navController.navigate(NavigationRoute.Diary)
-                        3 -> navController.navigate(NavigationRoute.Badges)
-                        4 -> navController.navigate(NavigationRoute.Profile)
+                        0 -> navController.navigate(NavigationRoute.Home) { launchSingleTop = true }
+                        1 -> navController.navigate(NavigationRoute.Launches) { launchSingleTop = true }
+                        2 -> navController.navigate(NavigationRoute.Diary) { launchSingleTop = true }
+                        3 -> navController.navigate(NavigationRoute.Badges) { launchSingleTop = true }
+                        4 -> navController.navigate(NavigationRoute.Profile) { launchSingleTop = true }
                     }
                 },
                 icon = {

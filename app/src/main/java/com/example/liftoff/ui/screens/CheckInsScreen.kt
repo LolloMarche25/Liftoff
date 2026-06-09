@@ -42,7 +42,7 @@ import com.example.liftoff.ui.theme.LiftoffTextSecondary
 fun CheckInsScreen(
     navController: NavHostController,
     checkIns: List<CheckIn>,
-    onCheckInCLick: (CheckIn) -> Unit
+    onCheckInClick: (CheckIn) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -79,7 +79,7 @@ fun CheckInsScreen(
                 items(checkIns) { checkIn ->
                     CheckInCard(
                         checkIn = checkIn,
-                        onClick = { onCheckInCLick(checkIn)}
+                        onClick = { onCheckInClick(checkIn)}
                         )
                 }
             }

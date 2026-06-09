@@ -33,7 +33,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import com.example.liftoff.ui.theme.LiftoffBackground
 import com.example.liftoff.ui.theme.LiftoffError
 import com.example.liftoff.ui.theme.LiftoffPrimary
@@ -42,7 +41,6 @@ import com.example.liftoff.ui.theme.LiftoffTextSecondary
 
 @Composable
 fun LoginScreen(
-    navController: NavHostController,
     email: String,
     password: String,
     isLoading: Boolean,

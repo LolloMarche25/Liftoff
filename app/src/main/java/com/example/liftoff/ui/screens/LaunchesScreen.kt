@@ -109,14 +109,16 @@ fun LaunchSearchBar(
                 fontSize = 14.sp
             ),
             decorationBox = { innerTextField ->
-                if (query.isEmpty()) {
-                    Text(
-                        text = "Search launches...",
-                        fontSize = 14.sp,
-                        color = LiftoffTextSecondary
-                    )
+                Box {
+                    if (query.isEmpty()) {
+                        Text(
+                            text = "Search launches...",
+                            fontSize = 14.sp,
+                            color = LiftoffTextSecondary
+                        )
+                    }
+                    innerTextField()
                 }
-                innerTextField()
             },
             modifier = Modifier.fillMaxWidth()
         )

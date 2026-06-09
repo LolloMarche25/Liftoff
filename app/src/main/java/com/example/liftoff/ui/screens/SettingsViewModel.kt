@@ -13,16 +13,12 @@ class SettingsViewModel(private val repository: SettingsRepository) : ViewModel(
     var username by mutableStateOf("")
         private set
 
-    var email by mutableStateOf("")
-        private set
-
     var notificationsEnabled by mutableStateOf(true)
         private set
 
     init {
         viewModelScope.launch {
             username = repository.username.first()
-            email = repository.email.first()
             notificationsEnabled = repository.notificationsEnabled.first()
         }
     }
@@ -30,11 +26,6 @@ class SettingsViewModel(private val repository: SettingsRepository) : ViewModel(
     fun onUsernameChange(value: String) {
         username = value
         viewModelScope.launch { repository.setUsername(value) }
-    }
-
-    fun onEmailChange(value: String) {
-        email = value
-        viewModelScope.launch { repository.setEmail(value) }
     }
 
     fun onNotificationsChange(enabled: Boolean) {

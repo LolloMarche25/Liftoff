@@ -24,9 +24,10 @@ class ProfileViewModel(
             }
         }
         viewModelScope.launch {
-            settingsRepository.email.collect { email ->
-                _state.value = _state.value.copy(email = email)
-            }
+            val firebaseEmail = com.google.firebase.auth.FirebaseAuth
+                .getInstance()
+                .currentUser?.email ?: ""
+            _state.value = _state.value.copy(email = firebaseEmail)
         }
         viewModelScope.launch {
             settingsRepository.avatarEmoji.collect { emoji ->
@@ -40,11 +41,13 @@ class ProfileViewModel(
                     checkInsCount = count,
                     launchesFollowed = count,
                     badgesUnlocked = when {
-                        count >= 10 -> 4
-                        count >= 5  -> 3
-                        count >= 3  -> 2
-                        count >= 1  -> 1
-                        else        -> 0
+                        count >= 15 -> 6
+                        count >= 10 -> 5
+                        count >= 7 -> 4
+                        count >= 5 -> 3
+                        count >= 3 -> 2
+                        count >= 1 -> 1
+                        else -> 0
                     }
                 )
             }

@@ -25,12 +25,23 @@ class BadgesViewModel(private val repository: CheckInRepository) : ViewModel() {
                     points >= 100 -> "Cadet"
                     else -> "Rookie"
                 }
+
+                val nextBadgeAt = when {
+                    count < 1 -> 1
+                    count < 3 -> 3
+                    count < 5 -> 5
+                    count < 7  -> 7
+                    count < 10 -> 10
+                    count < 15 -> 15
+                    else -> 15
+                }
+
                 _state.value = BadgesState(
                     badges = generateBadges(count),
                     userLevel = level,
                     userPoints = points,
-                    progressCurrent = count % 9,
-                    progressTotal = 9
+                    progressCurrent = count,
+                    progressTotal = nextBadgeAt
                 )
             }
         }
