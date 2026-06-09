@@ -5,7 +5,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.*
@@ -13,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -24,11 +24,8 @@ import com.example.liftoff.ui.theme.*
 fun SettingsScreen(
     navController: NavHostController,
     username: String,
-    email: String,
     notificationsEnabled: Boolean,
-    onUsernameChange: (String) -> Unit,
-    onEmailChange: (String) -> Unit,
-    onNotificationsChange: (Boolean) -> Unit
+    onUsernameChange: (String) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -80,28 +77,6 @@ fun SettingsScreen(
                         ),
                         modifier = Modifier.fillMaxWidth()
                     )
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    OutlinedTextField(
-                        value = email,
-                        onValueChange = onEmailChange,
-                        label = { Text("Email", color = LiftoffTextSecondary) },
-                        leadingIcon = {
-                            Icon(
-                                imageVector = Icons.Outlined.Email,
-                                contentDescription = null,
-                                tint = LiftoffPrimary
-                            )
-                        },
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedTextColor = Color.White,
-                            unfocusedTextColor = Color.White,
-                            focusedBorderColor = LiftoffPrimary,
-                            unfocusedBorderColor = LiftoffSurfaceVariant
-                        ),
-                        modifier = Modifier.fillMaxWidth()
-                    )
                 }
             }
 
@@ -134,9 +109,17 @@ fun SettingsScreen(
                         color = Color.White,
                         modifier = Modifier.weight(1f)
                     )
+                    val context = LocalContext.current
                     Switch(
                         checked = notificationsEnabled,
-                        onCheckedChange = onNotificationsChange,
+                        onCheckedChange = {
+                            val intent = android.content.Intent(
+                                android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS
+                            ).apply {
+                                putExtra(android.provider.Settings.EXTRA_APP_PACKAGE, context.packageName)
+                            }
+                            context.startActivity(intent)
+                        },
                         colors = SwitchDefaults.colors(
                             checkedThumbColor = Color.White,
                             checkedTrackColor = LiftoffPrimary

@@ -110,12 +110,18 @@ fun NextLaunchCard(
     onNotifyClick: () -> Unit
 ) {
     val context = LocalContext.current
+    val areNotificationsEnabled = androidx.core.app.NotificationManagerCompat
+        .from(context)
+        .areNotificationsEnabled()
+
+    val isReminderSet = isNotified && areNotificationsEnabled
 
     val notificationPermissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
             NotificationHelper.scheduleNotification(context, launch.name, launch.netUtc)
+            @Suppress("MissingPermission")
             NotificationHelper.showNotification(context, launch.name)
             onNotifyClick()
         }
@@ -126,28 +132,26 @@ fun NextLaunchCard(
         colors = CardDefaults.cardColors(containerColor = LiftoffSurface),
         modifier = Modifier.fillMaxWidth()
     ) {
-        Column {
-            Box {
-                AsyncImage(
-                    model = launch.imageUrl,
-                    contentDescription = launch.name,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(160.dp)
-                )
-                Text(
-                    text = launch.status,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(12.dp)
-                        .background(LiftoffGold, RoundedCornerShape(20.dp))
-                        .padding(12.dp, 4.dp)
-                )
-            }
+        Box {
+            AsyncImage(
+                model = launch.imageUrl,
+                contentDescription = launch.name,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(160.dp)
+            )
+            Text(
+                text = launch.status,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black,
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(12.dp)
+                    .background(LiftoffGold, RoundedCornerShape(20.dp))
+                    .padding(12.dp, 4.dp)
+            )
         }
 
         Column(modifier = Modifier.padding(16.dp)) {
@@ -211,24 +215,23 @@ fun NextLaunchCard(
 
             Button(
                 onClick = {
-                    if (!isNotified) {
+                    if (!isReminderSet) {
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
                             notificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
                         } else {
                             NotificationHelper.scheduleNotification(context, launch.name, launch.netUtc)
+                            @Suppress("MissingPermission")
                             NotificationHelper.showNotification(context, launch.name)
                             onNotifyClick()
                         }
                     }
                 },
                 shape = RoundedCornerShape(24.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = LiftoffPrimary
-                ),
+                colors = ButtonDefaults.buttonColors(containerColor = LiftoffPrimary),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = if (isNotified) "You'll be reminded" else "Remind Me",
+                    text = if (isReminderSet) "You'll be reminded" else "Remind Me",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
@@ -296,6 +299,7 @@ fun UpcomingLaunchCard(launch: Launch, onClick: () -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(60.dp)
+                    .align(Alignment.BottomStart)
                     .background(
                         Brush.verticalGradient(
                             colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.8f))

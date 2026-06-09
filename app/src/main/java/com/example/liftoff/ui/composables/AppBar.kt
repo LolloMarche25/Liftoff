@@ -30,14 +30,12 @@ fun LiftoffTopBar(
 ) {
     TopAppBar(
         title = {
-            Column {
-                Text(
-                    text = title,
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
-                )
-            }
+            Text(
+                text = title,
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White
+            )
         },
         navigationIcon = {
             if (showBackButton) {

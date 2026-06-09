@@ -1,8 +1,11 @@
 package com.example.liftoff.ui.utils
 
+import android.Manifest
+import android.R
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import androidx.annotation.RequiresPermission
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 
@@ -21,11 +24,12 @@ object NotificationHelper {
         manager.createNotificationChannel(channel)
     }
 
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     fun showNotification(context: Context, launchName: String) {
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(android.R.drawable.ic_dialog_info)
+            .setSmallIcon(R.drawable.ic_popup_reminder)
             .setContentTitle("Liftoff \uD83D\uDE80")
-            .setContentText("Reminder set fo launch $launchName")
+            .setContentText("Reminder set for launch $launchName")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .build()
 

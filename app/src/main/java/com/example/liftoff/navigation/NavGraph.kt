@@ -54,7 +54,6 @@ fun NavGraph(navController: NavHostController) {
             }
 
             LoginScreen(
-                navController = navController,
                 email = authViewModel.email,
                 password = authViewModel.password,
                 isLoading = authViewModel.isLoading,
@@ -76,7 +75,6 @@ fun NavGraph(navController: NavHostController) {
                 }
             }
             RegisterScreen(
-                navController = navController,
                 username = authViewModel.username,
                 email = authViewModel.email,
                 password = authViewModel.password,
@@ -137,7 +135,7 @@ fun NavGraph(navController: NavHostController) {
             CheckInsScreen(
                 navController = navController,
                 checkIns = state.checkIns,
-                onCheckInCLick = { checkIn ->
+                onCheckInClick = { checkIn ->
                     navController.navigate(NavigationRoute.CheckInDetail(checkIn.id))
                 }
             )
@@ -151,7 +149,10 @@ fun NavGraph(navController: NavHostController) {
             if (checkIn != null) {
                 CheckInDetailScreen(
                     navController = navController,
-                    checkIn = checkIn
+                    checkIn = checkIn,
+                    onDeleteClick = {
+                        checkInsViewModel.deleteCheckIn(checkIn.launchId)
+                    }
                 )
             }
         }
@@ -194,11 +195,8 @@ fun NavGraph(navController: NavHostController) {
             SettingsScreen(
                 navController = navController,
                 username = settingsViewModel.username,
-                email = settingsViewModel.email,
                 notificationsEnabled = settingsViewModel.notificationsEnabled,
-                onUsernameChange = { settingsViewModel.onUsernameChange(it) },
-                onEmailChange = { settingsViewModel.onEmailChange(it) },
-                onNotificationsChange = { settingsViewModel.onNotificationsChange(it) }
+                onUsernameChange = { settingsViewModel.onUsernameChange(it) }
             )
         }
         composable<NavigationRoute.LaunchDetail> { backStackEntry ->

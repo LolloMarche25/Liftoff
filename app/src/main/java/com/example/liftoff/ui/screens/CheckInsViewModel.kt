@@ -32,4 +32,11 @@ class CheckInsViewModel(private val repository: CheckInRepository) : ViewModel()
             }
         }
     }
+
+    fun deleteCheckIn(launchId: Int) {
+        viewModelScope.launch {
+            repository.deleteByLaunchId(launchId)
+        }
+    }
 }
+
