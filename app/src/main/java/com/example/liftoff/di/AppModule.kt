@@ -21,12 +21,30 @@ import com.example.liftoff.ui.screens.LaunchesViewModel
 import com.example.liftoff.ui.screens.PersonalNoteViewModel
 import com.example.liftoff.ui.screens.ProfileViewModel
 import com.example.liftoff.ui.screens.SettingsViewModel
-
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.http.HttpHeaders
+import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+
 val appModule = module {
+    single {
+        HttpClient(OkHttp) {
+            install(ContentNegotiation) {
+                json(Json { ignoreUnknownKeys = true })
+            }
+            defaultRequest {
+                headers.append(HttpHeaders.UserAgent, "LiftoffApp/1.0")
+            }
+        }
+    }
+
     single {
         Room.databaseBuilder(
             get(),
@@ -34,14 +52,15 @@ val appModule = module {
             "liftoff-database"
         ).fallbackToDestructiveMigration().build()
     }
+    single { get<LiftoffDatabase>().checkInDao() }
 
-    single { get<LiftoffDatabase>().checkInDao()}
     single { get<Context>().dataStore }
 
-    single { LiftoffDataSource() }
+    single { LiftoffDataSource(get()) }
+    single { OSMDataSource(get()) }
+
     single { LaunchRepository(get()) }
     single { CheckInRepository(get()) }
-    single { OSMDataSource() }
     single { SettingsRepository(get()) }
     single { AuthRepository() }
 

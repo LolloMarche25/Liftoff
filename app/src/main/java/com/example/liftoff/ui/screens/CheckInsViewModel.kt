@@ -20,6 +20,7 @@ class CheckInsViewModel(private val repository: CheckInRepository) : ViewModel()
                     checkIns = entities.map { entity ->
                         CheckIn(
                             id = entity.id,
+                            launchId = entity.launchId,
                             launchName = entity.launchName,
                             date = entity.date,
                             note = entity.note,
