@@ -39,7 +39,7 @@ private fun LaunchDto.toDomain(id: Int): Launch {
         netUtc = net,
         imageUrl = image ?: "",
         description = mission?.description ?: "No description available",
-        videoUrl = vid_urls.firstOrNull()?.url ?: "",
+        videoUrl = vidUrls.firstOrNull()?.url ?: "",
         daysLeft = days.toInt(),
         hoursLeft = hours.toInt(),
         minutesLeft = minutes.toInt(),
